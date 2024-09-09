@@ -12,27 +12,27 @@ spring:
         - id: auth-service     # 19092
           uri: lb://auth-service
           predicates:
-            - Path=/auth/**
+            - Path=/api/v1/auth/**
         - id: user-service     # 19093
           uri: lb://user-service
           predicates:
-            - Path=/users/**
+            - Path=/api/v1/users/**
         - id: message-service  # 19094
           uri: lb://message-service
           predicates:
-            - Path=/messages/**
+            - Path=/api/v1/messages/**
         - id: hub-service     # 19095
           uri: lb://hub-service
           predicates:
-            - Path=/hubs/**
+            - Path=/api/v1/hubs/**
         - id: vendor-service  # 19096
           uri: lb://vendor-service
           predicates:
-            - Path=/vendors/**
+            - Path=/api/v1/vendors/**
         - id: order-service  # 19097
           uri: lb://order-service
           predicates:
-            - Path=/orders/**
+            - Path=/api/v1/orders/**
       discovery:
         locator:
           enabled: true  # 서비스 디스커버리를 통해 동적으로 라우트를 생성하도록 설정
