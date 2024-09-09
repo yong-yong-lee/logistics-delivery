@@ -1,4 +1,4 @@
-package com.yongyonglee.order.global;
+package com.yongyonglee.order.global.response;
 
 import lombok.Getter;
 import lombok.Setter;
