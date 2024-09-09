@@ -30,7 +30,7 @@ public class Delivery {
     private UUID arrivalId;
 
     @Column(name = "status", nullable = false)
-    private DeliveryStatus status;
+    private DeliveryStatus status = DeliveryStatus.WAITING_AT_HUB;
 
     @Column(name = "vendor_address", nullable = false)
     private String vendorAddress;
