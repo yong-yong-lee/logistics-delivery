@@ -30,12 +30,6 @@ public class Hub extends TimeBase {
     @Column(name = "hub_address", nullable = false, columnDefinition = "VARCHAR(100)")
     private String hubAddress;
 
-//    @Column(nullable = false, columnDefinition = "VARCHAR(100)")
-//    private Double latitude;
-//
-//    @Column(nullable = false, columnDefinition = "VARCHAR(100)")
-//    private Double longitude;
-
     @Embedded
     private GeoLocation geoLocation;
 }
