@@ -1,6 +1,6 @@
-package com.yongyonglee.order.repository;
+package com.yongyonglee.order.domain.order.repository;
 
-import com.yongyonglee.order.domain.Order;
+import com.yongyonglee.order.domain.order.entity.Order;
 import java.util.UUID;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

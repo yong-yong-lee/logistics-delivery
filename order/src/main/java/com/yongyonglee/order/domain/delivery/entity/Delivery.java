@@ -1,4 +1,4 @@
-package com.yongyonglee.order.domain;
+package com.yongyonglee.order.domain.delivery.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

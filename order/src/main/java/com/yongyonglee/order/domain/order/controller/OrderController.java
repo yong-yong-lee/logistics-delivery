@@ -1,9 +1,9 @@
-package com.yongyonglee.order.controller;
+package com.yongyonglee.order.domain.order.controller;
 
-import com.yongyonglee.order.dto.OrderRequest;
-import com.yongyonglee.order.dto.OrderResponse;
+import com.yongyonglee.order.domain.order.dto.OrderRequest;
+import com.yongyonglee.order.domain.order.dto.OrderResponse;
 import com.yongyonglee.order.global.ApiResponse;
-import com.yongyonglee.order.service.OrderService;
+import com.yongyonglee.order.domain.order.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

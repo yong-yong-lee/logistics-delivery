@@ -1,5 +1,6 @@
-package com.yongyonglee.order.domain;
+package com.yongyonglee.order.domain.order.entity;
 
+import com.yongyonglee.order.domain.delivery.entity.Delivery;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

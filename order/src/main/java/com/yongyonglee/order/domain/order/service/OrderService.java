@@ -1,9 +1,9 @@
-package com.yongyonglee.order.service;
+package com.yongyonglee.order.domain.order.service;
 
-import com.yongyonglee.order.domain.Order;
-import com.yongyonglee.order.dto.OrderRequest;
-import com.yongyonglee.order.dto.OrderResponse;
-import com.yongyonglee.order.repository.OrderRepository;
+import com.yongyonglee.order.domain.order.entity.Order;
+import com.yongyonglee.order.domain.order.dto.OrderRequest;
+import com.yongyonglee.order.domain.order.dto.OrderResponse;
+import com.yongyonglee.order.domain.order.repository.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

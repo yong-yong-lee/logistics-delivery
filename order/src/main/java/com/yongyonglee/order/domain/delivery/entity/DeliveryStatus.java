@@ -1,4 +1,4 @@
-package com.yongyonglee.order.domain;
+package com.yongyonglee.order.domain.delivery.entity;
 
 public enum DeliveryStatus {
     WAITING_AT_HUB("허브 대기중"),

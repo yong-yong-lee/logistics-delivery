@@ -1,7 +1,7 @@
-package com.yongyonglee.order.dto;
+package com.yongyonglee.order.domain.order.dto;
 
-import com.yongyonglee.order.domain.Delivery;
-import com.yongyonglee.order.domain.Order;
+import com.yongyonglee.order.domain.delivery.entity.Delivery;
+import com.yongyonglee.order.domain.order.entity.Order;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
