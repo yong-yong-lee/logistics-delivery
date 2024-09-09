@@ -21,7 +21,7 @@ public class TimeBase {
     private LocalDateTime createdAt;
 
     @CreatedBy
-    @Column(name = "created_by")
+    @Column(name = "created_by", columnDefinition = "VARCHAR(100)")
     private String createdBy;
 
     @LastModifiedDate
@@ -29,17 +29,17 @@ public class TimeBase {
     private LocalDateTime updatedAt;
 
     @LastModifiedBy
-    @Column(name = "updated_by")
+    @Column(name = "updated_by", columnDefinition = "VARCHAR(100)")
     private String updatedBy;
 
     @Column(name = "deleted_at")
     private LocalDateTime deletedAt;
 
-    @Column(name = "deleted_by")
+    @Column(name = "deleted_by", columnDefinition = "VARCHAR(100)")
     private String deletedBy;
 
     @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
-    private boolean isDeleted;
+    private Boolean isDeleted;
 
     protected void setDeleted(String userName) {
         this.deletedAt = LocalDateTime.now();
