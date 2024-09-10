@@ -39,7 +39,7 @@ public class TimeBase {
     private String deletedBy;
 
     @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
-    private Boolean isDeleted;
+    private Boolean isDeleted = false;  // JPA 필드 초기화와 DB 기본값 설정을 함께 사용
 
     protected void setDeleted(String userName) {
         this.deletedAt = LocalDateTime.now();
