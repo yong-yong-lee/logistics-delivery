@@ -7,6 +7,7 @@ import static com.yongyonglee.hub.global.response.SuccessResponse.success;
 
 import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
 import com.yongyonglee.hub.domain.hub.service.HubService;
+import com.yongyonglee.hub.global.aop.page.PageSizeLimit;
 import com.yongyonglee.hub.global.response.CommonResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -55,6 +56,7 @@ public class HubController {
      */
     // TODO: 사용자 인증 추가
     @GetMapping("")
+    @PageSizeLimit
     public ResponseEntity<? extends CommonResponse> getHubs(
             @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
 
