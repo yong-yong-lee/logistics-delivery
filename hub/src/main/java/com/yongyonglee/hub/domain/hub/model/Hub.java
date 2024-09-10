@@ -1,5 +1,6 @@
 package com.yongyonglee.hub.domain.hub.model;
 
+import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
 import com.yongyonglee.hub.domain.hub.model.value_object.GeoLocation;
 import com.yongyonglee.hub.domain.model.TimeBase;
 import jakarta.persistence.Column;
@@ -10,9 +11,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-
 
 @Entity(name = "p_hub")
 @Getter
@@ -32,4 +33,20 @@ public class Hub extends TimeBase {
 
     @Embedded
     private GeoLocation geoLocation;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    public Hub(String hubName, String hubAddress, GeoLocation geoLocation) {
+        this.hubName = hubName;
+        this.hubAddress = hubAddress;
+        this.geoLocation = geoLocation;
+    }
+
+    public static Hub of(CreateHubRequestDto requestDto) {
+
+        return Hub.builder()
+                .hubName(requestDto.hubName())
+                .hubAddress(requestDto.hubAddress())
+                .geoLocation(new GeoLocation(requestDto.latitude(), requestDto.longitude()))
+                .build();
+    }
 }
