@@ -3,6 +3,7 @@ package com.yongyonglee.hub.domain.hub.controller;
 
 import static com.yongyonglee.hub.domain.hub.message.SuccessMessage.CREATE_HUB_SUCCESS;
 import static com.yongyonglee.hub.domain.hub.message.SuccessMessage.GET_HUB_SUCCESS;
+import static com.yongyonglee.hub.domain.hub.message.SuccessMessage.SEARCH_HUB_SUCCESS;
 import static com.yongyonglee.hub.global.response.SuccessResponse.success;
 
 import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
@@ -68,7 +69,7 @@ public class HubController {
             @RequestParam(required = false) String hubAddress,
             @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
 
-        return ResponseEntity.status(GET_HUB_SUCCESS.getHttpStatus())
-                .body(success(GET_HUB_SUCCESS.getMessage(), hubService.searchHubs(hubName, hubAddress, pageable)));
+        return ResponseEntity.status(SEARCH_HUB_SUCCESS.getHttpStatus())
+                .body(success(SEARCH_HUB_SUCCESS.getMessage(), hubService.searchHubs(hubName, hubAddress, pageable)));
     }
 }
