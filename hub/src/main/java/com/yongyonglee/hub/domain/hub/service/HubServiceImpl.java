@@ -8,6 +8,8 @@ import com.yongyonglee.hub.domain.hub.message.ExceptionMessage;
 import com.yongyonglee.hub.domain.hub.model.Hub;
 import com.yongyonglee.hub.domain.hub.repository.HubRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -30,6 +32,14 @@ public class HubServiceImpl implements HubService {
         Hub hub = findById(hubId);
 
         return HubResponseDto.from(hub);
+    }
+
+    @Override
+    public Page<HubResponseDto> getHubs(Pageable pageable) {
+
+        Page<Hub> hubs = hubRepository.findAllByIsDeletedFalse(pageable);
+
+        return hubs.map(HubResponseDto::from);
     }
 
     public Hub findById(String hubId) {
