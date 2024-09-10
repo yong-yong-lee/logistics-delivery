@@ -1,6 +1,8 @@
 package com.yongyonglee.order.domain.order.dto;
 
 import com.yongyonglee.order.domain.delivery.entity.Delivery;
+import com.yongyonglee.order.global.entity.BaseTimeEntity;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,4 +25,5 @@ public class OrderResponse {
     private String receiverName;
     private String receiverSlackId;
     private Delivery delivery;
+    private LocalDateTime createdAt;
 }

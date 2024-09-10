@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Entity
@@ -46,6 +47,7 @@ public class Order extends BaseTimeEntity {
     @Column(name = "isDeleted", nullable = false)
     private boolean isDeleted;
 
+    @Setter
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
@@ -59,6 +61,8 @@ public class Order extends BaseTimeEntity {
                 .quantity(quantity)
                 .receiverName(delivery.getReceiverName())
                 .receiverSlackId(delivery.getReceiverSlackId())
+                .createdAt(getCreatedAt())
                 .build();
     }
+
 }
