@@ -8,7 +8,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class OrderRequest {
+public class OrderCreateRequest {
 
     private UUID productId;
     private UUID demandId;
@@ -17,19 +17,12 @@ public class OrderRequest {
     private String receiverName;
     private String receiverSlackId;
 
-    public Order toEntity(){
-
-        Delivery delivery = Delivery.builder()
-                .receiverName(receiverName)
-                .receiverSlackId(receiverSlackId)
-                .build();
-
+    public Order toEntity() {
         return Order.builder()
-                .productId(productId)
-                .demandId(demandId)
-                .supplyId(supplyId)
-                .quantity(quantity)
-                .delivery(delivery)
+                .productId(this.productId)
+                .demandId(this.demandId)
+                .supplyId(this.supplyId)
+                .quantity(this.quantity)
                 .build();
     }
 

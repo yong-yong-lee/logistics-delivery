@@ -1,7 +1,6 @@
 package com.yongyonglee.order.domain.order.dto;
 
 import com.yongyonglee.order.domain.delivery.entity.Delivery;
-import com.yongyonglee.order.domain.order.entity.Order;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,7 +15,7 @@ import lombok.Setter;
 @Setter
 public class OrderResponse {
 
-    private UUID Id;
+    private UUID id;
     private UUID productId;
     private UUID demandId;
     private UUID supplyId;
@@ -24,20 +23,4 @@ public class OrderResponse {
     private String receiverName;
     private String receiverSlackId;
     private Delivery delivery;
-
-    public static OrderResponse toResponse(Order order){
-        OrderResponse response = new OrderResponse();
-        response.setId(order.getId());
-        response.setProductId(order.getProductId());
-        response.setDemandId(order.getDemandId());
-        response.setSupplyId(order.getSupplyId());
-        response.setQuantity(order.getQuantity());
-
-        if (order.getDelivery() != null) {
-            response.setReceiverName(order.getDelivery().getReceiverName());
-            response.setReceiverSlackId(order.getDelivery().getReceiverSlackId());
-        }
-
-        return response;
-    }
 }
