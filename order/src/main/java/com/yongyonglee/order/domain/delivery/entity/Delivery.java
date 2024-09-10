@@ -1,25 +1,33 @@
 package com.yongyonglee.order.domain.delivery.entity;
 
+import com.yongyonglee.order.domain.delivery.dto.DeliveryResponse;
 import com.yongyonglee.order.global.entity.BaseTimeEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Builder
 @Entity
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class Delivery extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @Column(name = "delivery_id", nullable = false)
     private UUID id;
+
+    @JoinColumn(name = "order_id")
+    private UUID orderId;
 
     @Column(name = "productId", nullable = false)
     private UUID productId;///////다시
@@ -42,10 +50,15 @@ public class Delivery extends BaseTimeEntity {
     @Column(name = "receiver_slack_id", nullable = false)
     private String receiverSlackId;
 
-
-    @Builder
-    public Delivery(String receiverName, String receiverSlackId){
-        this.receiverName = receiverName;
-        this.receiverSlackId = receiverSlackId;
+    public DeliveryResponse toResponse() {
+        return DeliveryResponse.builder()
+                .id(id)
+                .status(status)
+                .departureId(departureId)
+                .arrivalId(arrivalId)
+                .address(vendorAddress)
+                .receiverName(receiverName)
+                .receiverSlackId(receiverSlackId)
+                .build();
     }
 }

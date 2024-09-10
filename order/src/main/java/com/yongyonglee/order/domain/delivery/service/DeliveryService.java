@@ -7,6 +7,7 @@ import com.yongyonglee.order.domain.delivery.repository.DeliveryRepository;
 import com.yongyonglee.order.domain.order.dto.OrderResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @RequiredArgsConstructor
 @Service
@@ -14,6 +15,7 @@ public class DeliveryService {
 
     private final DeliveryRepository deliveryRepository;
 
+    @Transactional
     public DeliveryResponse addDelivery(OrderResponse orderResponse) {
 
 //        아래부분의 address 조회는 feignClient 이용해야합니다. 현재는 더미 데이터입니다. deliveryRepo가 아니라 vendorRepo.findById(주문요청한 가게 id).getAddress() 해야할듯
@@ -21,7 +23,7 @@ public class DeliveryService {
                 .getVendorAddress();
 
         Delivery delivery = Delivery.builder()
-                .order(orderResponse.getId())
+                .orderId(orderResponse.getId())
                 .status(DeliveryStatus.WAITING_AT_HUB)
                 .departureId(orderResponse.getSupplyId())
                 .arrivalId(orderResponse.getDemandId())
