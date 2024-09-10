@@ -1,5 +1,6 @@
 package com.yongyonglee.hub.domain.hub.service;
 
+import com.querydsl.core.BooleanBuilder;
 import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
 import com.yongyonglee.hub.domain.hub.dto.response.CreateHubResponseDto;
 import com.yongyonglee.hub.domain.hub.dto.response.HubResponseDto;
@@ -11,6 +12,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import static com.yongyonglee.hub.domain.hub.model.QHub.hub;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +42,26 @@ public class HubServiceImpl implements HubService {
     public Page<HubResponseDto> getHubs(Pageable pageable) {
 
         Page<Hub> hubs = hubRepository.findAllByIsDeletedFalse(pageable);
+
+        return hubs.map(HubResponseDto::from);
+    }
+
+    @Override
+    public Page<HubResponseDto> searchHubs(String hubName, String hubAddress, Pageable pageable) {
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // isDeleted가 false인 경우만 조회
+        builder.and(hub.isDeleted.eq(false));
+
+        if (StringUtils.hasText(hubName)) {
+            builder.and(hub.hubName.containsIgnoreCase(hubName));
+        }
+        if (StringUtils.hasText(hubAddress)) {
+            builder.and(hub.hubAddress.containsIgnoreCase(hubAddress));
+        }
+
+        Page<Hub> hubs = hubRepository.findAll(builder, pageable);
 
         return hubs.map(HubResponseDto::from);
     }

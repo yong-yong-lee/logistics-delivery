@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,9 +30,7 @@ public class HubController {
 
     private final HubService hubService;
 
-    /**
-     * 허브 생성 api
-     */
+    /** 허브 생성 api */
     // TODO: 사용자 인증 및 인가(MASTER) 추가
     @PostMapping("")
     public ResponseEntity<? extends CommonResponse> createHub(@Valid @RequestBody CreateHubRequestDto requestDto) {
@@ -40,9 +39,7 @@ public class HubController {
                 .body(success(CREATE_HUB_SUCCESS.getMessage(), hubService.createHub(requestDto)));
     }
 
-    /**
-     * 허브 단건 조회 api
-     */
+    /** 허브 단건 조회 api */
     // TODO: 사용자 인증 추가
     @GetMapping("/{hubId}")
     public ResponseEntity<? extends CommonResponse> getHub(@PathVariable(name = "hubId") String hubId) {
@@ -51,9 +48,7 @@ public class HubController {
                 .body(success(GET_HUB_SUCCESS.getMessage(), hubService.getHub(hubId)));
     }
 
-    /**
-     * 허브 목록 조회 api
-     */
+    /** 허브 목록 조회 api */
     // TODO: 사용자 인증 추가
     @GetMapping("")
     @PageSizeLimit
@@ -62,5 +57,18 @@ public class HubController {
 
         return ResponseEntity.status(GET_HUB_SUCCESS.getHttpStatus())
                 .body(success(GET_HUB_SUCCESS.getMessage(), hubService.getHubs(pageable)));
+    }
+
+    /** 허브 검색 api(이름, 주소별) */
+    // TODO: 사용자 인증 추가
+    @GetMapping("/search")
+    @PageSizeLimit
+    public ResponseEntity<? extends CommonResponse> searchHubs(
+            @RequestParam(required = false) String hubName,
+            @RequestParam(required = false) String hubAddress,
+            @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
+
+        return ResponseEntity.status(GET_HUB_SUCCESS.getHttpStatus())
+                .body(success(GET_HUB_SUCCESS.getMessage(), hubService.searchHubs(hubName, hubAddress, pageable)));
     }
 }

@@ -13,4 +13,6 @@ public interface HubService {
     HubResponseDto getHub(String hubId);
 
     Page<HubResponseDto> getHubs(Pageable pageable);
+
+    Page<HubResponseDto> searchHubs(String hubName, String hubAddress, Pageable pageable);
 }
