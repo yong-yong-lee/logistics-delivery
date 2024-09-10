@@ -44,13 +44,16 @@ public class Order extends BaseTimeEntity {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
+    @Column(name = "isDeleted", nullable = false)
+    private boolean isDeleted;
+
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "delivery_id")
     private Delivery delivery;
 
     public OrderResponse toResponse() {
         return OrderResponse.builder()
-                .Id(id)
+                .id(id)
                 .productId(productId)
                 .demandId(demandId)
                 .supplyId(supplyId)
