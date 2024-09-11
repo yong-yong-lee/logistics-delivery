@@ -14,6 +14,7 @@ import com.yongyonglee.hub.domain.hub.service.HubService;
 import com.yongyonglee.hub.global.aop.page.PageSizeLimit;
 import com.yongyonglee.hub.global.response.CommonResponse;
 import jakarta.validation.Valid;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
@@ -48,7 +49,7 @@ public class HubController {
     /** 허브 단건 조회 api */
     // TODO: 사용자 인증 추가
     @GetMapping("/{hubId}")
-    public ResponseEntity<? extends CommonResponse> getHub(@PathVariable(name = "hubId") String hubId) {
+    public ResponseEntity<? extends CommonResponse> getHub(@PathVariable(name = "hubId") UUID hubId) {
 
         return ResponseEntity.status(GET_HUB_SUCCESS.getHttpStatus())
                 .body(success(GET_HUB_SUCCESS.getMessage(), hubService.getHub(hubId)));
@@ -81,7 +82,7 @@ public class HubController {
     /** 허브  수정 api */
     // TODO: 사용자 인증 및 인가(MASTER) 추가
     @PutMapping("/{hubId}")
-    public ResponseEntity<? extends CommonResponse> updateHub(@PathVariable(name = "hubId") String hubId,
+    public ResponseEntity<? extends CommonResponse> updateHub(@PathVariable(name = "hubId") UUID hubId,
             @RequestBody UpdateHubRequestDto requestDto) {
 
         return ResponseEntity.status(UPDATE_HUB_SUCCESS.getHttpStatus())
@@ -91,7 +92,7 @@ public class HubController {
     /** 허브 삭제 api */
     // TODO: 사용자 인증 및 인가(MASTER) 추가
     @DeleteMapping("/{hubId}")
-    public ResponseEntity<? extends CommonResponse> deleteHub(@PathVariable(name = "hubId") String hubId) {
+    public ResponseEntity<? extends CommonResponse> deleteHub(@PathVariable(name = "hubId") UUID hubId) {
 
         hubService.deleteHub(hubId);
 

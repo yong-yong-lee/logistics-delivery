@@ -9,6 +9,7 @@ import com.yongyonglee.hub.domain.hub.exception.HubException;
 import com.yongyonglee.hub.domain.hub.message.ExceptionMessage;
 import com.yongyonglee.hub.domain.hub.model.Hub;
 import com.yongyonglee.hub.domain.hub.repository.HubRepository;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -34,7 +35,7 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public HubResponseDto getHub(String hubId) {
+    public HubResponseDto getHub(UUID hubId) {
 
         Hub hub = findById(hubId);
 
@@ -70,7 +71,7 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public HubResponseDto updateHub(String hubId, UpdateHubRequestDto requestDto) {
+    public HubResponseDto updateHub(UUID hubId, UpdateHubRequestDto requestDto) {
 
         Hub hub = findById(hubId);
 
@@ -88,14 +89,14 @@ public class HubServiceImpl implements HubService {
     }
 
     @Override
-    public void deleteHub(String hubId) {
+    public void deleteHub(UUID hubId) {
         Hub hub = findById(hubId);
 
         // TODO: 사용자 정보 가져오기
         hub.deleteHub("userName");
     }
 
-    public Hub findById(String hubId) {
+    public Hub findById(UUID hubId) {
 
         return hubRepository.findByIdAndIsDeletedFalse(hubId)
                 .orElseThrow(() -> new HubException(ExceptionMessage.HUB_NOT_FOUND));
