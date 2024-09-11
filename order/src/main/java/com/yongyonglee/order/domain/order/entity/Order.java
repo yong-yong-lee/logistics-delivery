@@ -29,7 +29,7 @@ public class Order extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "order_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @Column(name = "product_id", nullable = false)
@@ -44,7 +44,7 @@ public class Order extends BaseTimeEntity {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Column(name = "isDeleted", nullable = false)
+    @Column(name = "is_deleted", nullable = false)
     private boolean isDeleted;
 
     @Setter
@@ -59,8 +59,6 @@ public class Order extends BaseTimeEntity {
                 .demandId(demandId)
                 .supplyId(supplyId)
                 .quantity(quantity)
-                .receiverName(delivery.getReceiverName())
-                .receiverSlackId(delivery.getReceiverSlackId())
                 .createdAt(getCreatedAt())
                 .build();
     }

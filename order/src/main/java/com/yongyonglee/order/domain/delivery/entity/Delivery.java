@@ -23,13 +23,13 @@ public class Delivery extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(name = "delivery_id", nullable = false)
+    @Column(name = "id", nullable = false)
     private UUID id;
 
     @JoinColumn(name = "order_id")
     private UUID orderId;
 
-    @Column(name = "productId", nullable = false)
+    @Column(name = "product_id", nullable = false)
     private UUID productId;///////다시
 
     @Column(name = "departure_id", nullable = false)
