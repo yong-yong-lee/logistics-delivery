@@ -2,6 +2,7 @@ package com.yongyonglee.hub.domain.hub.controller;
 
 
 import static com.yongyonglee.hub.domain.hub.message.SuccessMessage.CREATE_HUB_SUCCESS;
+import static com.yongyonglee.hub.domain.hub.message.SuccessMessage.DELETE_HUB_SUCCESS;
 import static com.yongyonglee.hub.domain.hub.message.SuccessMessage.GET_HUB_SUCCESS;
 import static com.yongyonglee.hub.domain.hub.message.SuccessMessage.SEARCH_HUB_SUCCESS;
 import static com.yongyonglee.hub.global.response.SuccessResponse.success;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -71,5 +73,16 @@ public class HubController {
 
         return ResponseEntity.status(SEARCH_HUB_SUCCESS.getHttpStatus())
                 .body(success(SEARCH_HUB_SUCCESS.getMessage(), hubService.searchHubs(hubName, hubAddress, pageable)));
+    }
+
+    /** 허브 삭제 api */
+    // TODO: 사용자 인증 및 인가(MASTER) 추가
+    @DeleteMapping("/{hubId}")
+    public ResponseEntity<? extends CommonResponse> deleteHub(@PathVariable(name = "hubId") String hubId) {
+
+        hubService.deleteHub(hubId);
+
+        return ResponseEntity.status(DELETE_HUB_SUCCESS.getHttpStatus())
+                .body(success(DELETE_HUB_SUCCESS.getMessage()));
     }
 }

@@ -49,4 +49,8 @@ public class Hub extends TimeBase {
                 .geoLocation(new GeoLocation(requestDto.latitude(), requestDto.longitude()))
                 .build();
     }
+
+    public void deleteHub(String userName) {
+        super.setDeleted(userName);
+    }
 }

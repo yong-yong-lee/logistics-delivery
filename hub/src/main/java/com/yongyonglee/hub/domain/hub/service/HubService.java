@@ -15,4 +15,6 @@ public interface HubService {
     Page<HubResponseDto> getHubs(Pageable pageable);
 
     Page<HubResponseDto> searchHubs(String hubName, String hubAddress, Pageable pageable);
+
+    void deleteHub(String hubId);
 }

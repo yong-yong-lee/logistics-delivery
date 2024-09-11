@@ -12,12 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import static com.yongyonglee.hub.domain.hub.model.QHub.hub;
 
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class HubServiceImpl implements HubService {
 
     private final HubRepository hubRepository;
@@ -64,6 +66,14 @@ public class HubServiceImpl implements HubService {
         Page<Hub> hubs = hubRepository.findAll(builder, pageable);
 
         return hubs.map(HubResponseDto::from);
+    }
+
+    @Override
+    public void deleteHub(String hubId) {
+        Hub hub = findById(hubId);
+
+        // TODO: 사용자 정보 가져오기
+        hub.deleteHub("userName");
     }
 
     public Hub findById(String hubId) {
