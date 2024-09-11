@@ -1,13 +1,18 @@
 package com.yongyonglee.order.domain.delivery.entity;
 
 import com.yongyonglee.order.domain.delivery.dto.DeliveryResponse;
+import com.yongyonglee.order.domain.route.entity.Route;
 import com.yongyonglee.order.global.entity.BaseTimeEntity;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,6 +33,9 @@ public class Delivery extends BaseTimeEntity {
 
     @JoinColumn(name = "order_id")
     private UUID orderId;
+
+    @OneToMany(mappedBy = "delivery", cascade = CascadeType.ALL)
+    private List<Route> routes = new ArrayList<>();
 
     @Column(name = "product_id", nullable = false)
     private UUID productId;///////다시
