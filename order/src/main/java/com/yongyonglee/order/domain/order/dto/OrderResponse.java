@@ -22,8 +22,6 @@ public class OrderResponse {
     private UUID demandId;
     private UUID supplyId;
     private Integer quantity;
-    private String receiverName;
-    private String receiverSlackId;
     private Delivery delivery;
     private LocalDateTime createdAt;
 }
