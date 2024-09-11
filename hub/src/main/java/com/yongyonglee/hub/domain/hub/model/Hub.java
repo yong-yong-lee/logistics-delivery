@@ -1,6 +1,7 @@
 package com.yongyonglee.hub.domain.hub.model;
 
 import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
+import com.yongyonglee.hub.domain.hub.dto.request.UpdateHubRequestDto;
 import com.yongyonglee.hub.domain.hub.model.value_object.GeoLocation;
 import com.yongyonglee.hub.domain.model.TimeBase;
 import jakarta.persistence.Column;
@@ -48,6 +49,17 @@ public class Hub extends TimeBase {
                 .hubAddress(requestDto.hubAddress())
                 .geoLocation(new GeoLocation(requestDto.latitude(), requestDto.longitude()))
                 .build();
+    }
+
+    public void updateHub(UpdateHubRequestDto requestDto) {
+
+        if(requestDto.hubName() != null){
+            this.hubName = requestDto.hubName();
+        }
+        if(requestDto.hubAddress() != null){
+            this.hubAddress = requestDto.hubAddress();
+            this.geoLocation = new GeoLocation(requestDto.latitude(), requestDto.longitude());
+        }
     }
 
     public void deleteHub(String userName) {

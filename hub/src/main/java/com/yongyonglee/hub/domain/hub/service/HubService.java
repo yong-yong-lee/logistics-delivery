@@ -1,6 +1,7 @@
 package com.yongyonglee.hub.domain.hub.service;
 
 import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
+import com.yongyonglee.hub.domain.hub.dto.request.UpdateHubRequestDto;
 import com.yongyonglee.hub.domain.hub.dto.response.CreateHubResponseDto;
 import com.yongyonglee.hub.domain.hub.dto.response.HubResponseDto;
 import org.springframework.data.domain.Page;
@@ -15,6 +16,8 @@ public interface HubService {
     Page<HubResponseDto> getHubs(Pageable pageable);
 
     Page<HubResponseDto> searchHubs(String hubName, String hubAddress, Pageable pageable);
+
+    HubResponseDto updateHub(String hubId, UpdateHubRequestDto requestDto);
 
     void deleteHub(String hubId);
 }

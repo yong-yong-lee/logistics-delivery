@@ -14,4 +14,6 @@ public interface HubRepository extends JpaRepository<Hub, String>, QuerydslPredi
     Optional<Hub> findByIdAndIsDeletedFalse(String id);
 
     Page<Hub> findAllByIsDeletedFalse(Pageable pageable);
+
+    boolean existsByHubNameAndIsDeletedFalse(String name);
 }

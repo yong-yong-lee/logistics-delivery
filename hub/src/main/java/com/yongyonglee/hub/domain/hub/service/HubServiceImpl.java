@@ -2,6 +2,7 @@ package com.yongyonglee.hub.domain.hub.service;
 
 import com.querydsl.core.BooleanBuilder;
 import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
+import com.yongyonglee.hub.domain.hub.dto.request.UpdateHubRequestDto;
 import com.yongyonglee.hub.domain.hub.dto.response.CreateHubResponseDto;
 import com.yongyonglee.hub.domain.hub.dto.response.HubResponseDto;
 import com.yongyonglee.hub.domain.hub.exception.HubException;
@@ -66,6 +67,24 @@ public class HubServiceImpl implements HubService {
         Page<Hub> hubs = hubRepository.findAll(builder, pageable);
 
         return hubs.map(HubResponseDto::from);
+    }
+
+    @Override
+    public HubResponseDto updateHub(String hubId, UpdateHubRequestDto requestDto) {
+
+        Hub hub = findById(hubId);
+
+        // name 필드가 변경되었고, unique 조건이 있을 때 중복 검사 수행
+        if(requestDto.hubName() != null && !requestDto.hubName().equals(hub.getHubName())) {
+
+            if(hubRepository.existsByHubNameAndIsDeletedFalse(requestDto.hubName())){
+                throw new HubException(ExceptionMessage.HUB_NAME_ALREADY_EXISTS);
+            }
+        }
+
+        hub.updateHub(requestDto);
+
+        return HubResponseDto.from(hub);
     }
 
     @Override
