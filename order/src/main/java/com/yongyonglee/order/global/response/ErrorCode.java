@@ -12,9 +12,11 @@ public enum ErrorCode {
     UNAUTHORIZED(401, "Unauthorized access."),
     FORBIDDEN(403, "Forbidden."),
     INTERNAL_SERVER_ERROR(500, "Internal server error."),
-    INVALID_REQUEST_BODY(400, "잘못된 요청 입니다.")
+    INVALID_REQUEST_BODY(400, "잘못된 요청 입니다."),
 
-    ;
+    //order
+    ORDER_ID_NOT_FOUND(404, "주문 id 가 존재하지 않습니다."),
+    DELIVERY_ID_NOT_FOUND(404, "배송 id가 존재하지 않습니다.");
 
     private final int status;
     private final String message;
