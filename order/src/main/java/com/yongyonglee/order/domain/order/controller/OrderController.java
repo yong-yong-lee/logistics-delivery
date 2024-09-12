@@ -4,15 +4,19 @@ import com.yongyonglee.order.domain.delivery.dto.DeliveryResponse;
 import com.yongyonglee.order.domain.delivery.service.DeliveryService;
 import com.yongyonglee.order.domain.order.dto.OrderCreateRequest;
 import com.yongyonglee.order.domain.order.dto.OrderResponse;
+import com.yongyonglee.order.domain.order.dto.OrderUpdateDto;
 import com.yongyonglee.order.global.response.ApiResponse;
 import com.yongyonglee.order.domain.order.service.OrderService;
 import com.yongyonglee.order.global.response.CustomException;
 import com.yongyonglee.order.global.response.ErrorCode;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -49,5 +53,24 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiResponse.of("주문 조회 성공", orderResponse));
+    }
+
+    @PatchMapping("/{orderId}")
+    public ResponseEntity<ApiResponse<OrderResponse>> updateOrder(
+            @PathVariable UUID orderId,
+            @RequestBody OrderUpdateDto orderUpdateDto){
+
+        OrderResponse orderResponse = orderService.updateOrder(orderId,orderUpdateDto);
+
+        return ResponseEntity.status(HttpStatus.OK).body(ApiResponse.of("주문 정보 수정을 성공했습니다.", orderResponse));
+    }
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<ApiResponse<Void>> deleteOrder(@PathVariable UUID orderId){
+
+        orderService.deleteOrder(orderId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 }

@@ -57,4 +57,20 @@ public class DeliveryService {
 
         return delivery.toResponse();
     }
+
+    @Transactional
+    public void updateDelivery(UUID deliveryId, String receiverName, String receiverSlackId) {
+        Delivery delivery = deliveryRepository.findById(deliveryId)
+                .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_NOT_FOUND));
+
+        if (receiverName != null && !receiverName.isEmpty()) {
+            delivery.setReceiverName(receiverName);
+        }
+
+        if (receiverSlackId != null && !receiverSlackId.isEmpty()) {
+            delivery.setReceiverSlackId(receiverSlackId);
+        }
+
+        deliveryRepository.save(delivery);
+    }
 }

@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Builder
 @Entity
@@ -52,9 +53,11 @@ public class Delivery extends BaseTimeEntity {
     @Column(name = "vendor_address", nullable = false)
     private String vendorAddress;
 
+    @Setter
     @Column(name = "receiver_name", nullable = false)
     private String receiverName;
 
+    @Setter
     @Column(name = "receiver_slack_id", nullable = false)
     private String receiverSlackId;
 
