@@ -6,6 +6,7 @@ import static com.yongyonglee.vendor.global.response.SuccessResponse.success;
 
 import com.yongyonglee.vendor.domain.vendor.dto.request.CreateVendorRequestDto;
 import com.yongyonglee.vendor.domain.vendor.service.VendorService;
+import com.yongyonglee.vendor.global.aop.page.PageSizeLimit;
 import com.yongyonglee.vendor.global.response.CommonResponse;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
@@ -47,6 +48,7 @@ public class VendorController {
     /** 업체 검색 api */
     // TODO: 사용자 인증 및 인가(VENDOR_MANAGER, HUB_MANAGER, MASTER) 추가
     @GetMapping("")
+    @PageSizeLimit
     public ResponseEntity<? extends CommonResponse> searchVendors(
             @RequestParam(required = false) String vendorName,
             @RequestParam(required = false) String vendorCategory,
