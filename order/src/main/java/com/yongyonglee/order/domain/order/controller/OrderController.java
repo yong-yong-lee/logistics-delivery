@@ -6,6 +6,8 @@ import com.yongyonglee.order.domain.order.dto.OrderCreateRequest;
 import com.yongyonglee.order.domain.order.dto.OrderResponse;
 import com.yongyonglee.order.global.response.ApiResponse;
 import com.yongyonglee.order.domain.order.service.OrderService;
+import com.yongyonglee.order.global.response.CustomException;
+import com.yongyonglee.order.global.response.ErrorCode;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ public class OrderController {
         DeliveryResponse deliveryResponse = deliveryService.addDelivery(orderCreateRequest, orderResponse.getId());
 
         if (deliveryResponse == null){
-            throw new IllegalArgumentException("배송 엔티티 미생성");   //변경 예정
+            throw new CustomException(ErrorCode.NOT_FOUND);   //변경 예정
         }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(
