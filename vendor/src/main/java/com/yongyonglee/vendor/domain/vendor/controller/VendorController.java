@@ -38,7 +38,7 @@ public class VendorController {
     }
 
     /** 업체 단건 조회 api */
-    // TODO: 사용자 인증 및 인가(VENDOR_MANAGER, HUB_MANAGER, MASTER) 추가
+    // TODO: 사용자 인증 추가
     @GetMapping("/{vendorId}")
     public ResponseEntity<? extends CommonResponse> getVendor(@PathVariable UUID vendorId) {
         return ResponseEntity.status(GET_VENDOR_SUCCESS.getHttpStatus())
@@ -46,7 +46,7 @@ public class VendorController {
     }
 
     /** 업체 검색 api */
-    // TODO: 사용자 인증 및 인가(VENDOR_MANAGER, HUB_MANAGER, MASTER) 추가
+    // TODO: 사용자 인증 추가
     @GetMapping("")
     @PageSizeLimit
     public ResponseEntity<? extends CommonResponse> searchVendors(
