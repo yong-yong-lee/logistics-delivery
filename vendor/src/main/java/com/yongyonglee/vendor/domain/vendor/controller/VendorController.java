@@ -1,13 +1,17 @@
 package com.yongyonglee.vendor.domain.vendor.controller;
 
 import static com.yongyonglee.vendor.domain.vendor.message.SuccessMessage.CREATE_VENDOR_SUCCESS;
+import static com.yongyonglee.vendor.domain.vendor.message.SuccessMessage.GET_VENDOR_SUCCESS;
 import static com.yongyonglee.vendor.global.response.SuccessResponse.success;
 
 import com.yongyonglee.vendor.domain.vendor.dto.request.CreateVendorRequestDto;
 import com.yongyonglee.vendor.domain.vendor.service.VendorService;
 import com.yongyonglee.vendor.global.response.CommonResponse;
+import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,5 +30,13 @@ public class VendorController {
     public ResponseEntity<? extends CommonResponse> createVendor(@RequestBody CreateVendorRequestDto requestDto) {
         return ResponseEntity.status(CREATE_VENDOR_SUCCESS.getHttpStatus())
                 .body(success(CREATE_VENDOR_SUCCESS.getMessage(), vendorService.createVendor(requestDto)));
+    }
+
+    /** 업체 단건 조회 api */
+    // TODO: 사용자 인증 추가
+    @GetMapping("/{vendorId}")
+    public ResponseEntity<? extends CommonResponse> getVendor(@PathVariable UUID vendorId) {
+        return ResponseEntity.status(GET_VENDOR_SUCCESS.getHttpStatus())
+                .body(success(GET_VENDOR_SUCCESS.getMessage(), vendorService.getVendor(vendorId)));
     }
 }
