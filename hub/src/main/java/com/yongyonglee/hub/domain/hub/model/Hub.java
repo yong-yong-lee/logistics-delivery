@@ -1,6 +1,7 @@
 package com.yongyonglee.hub.domain.hub.model;
 
 import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
+import com.yongyonglee.hub.domain.hub.dto.request.UpdateHubRequestDto;
 import com.yongyonglee.hub.domain.hub.model.value_object.GeoLocation;
 import com.yongyonglee.hub.domain.model.TimeBase;
 import jakarta.persistence.Column;
@@ -9,6 +10,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,7 +25,7 @@ public class Hub extends TimeBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     @Column(name = "hub_name", nullable = false, unique = true, columnDefinition = "VARCHAR(100)")
     private String hubName;
@@ -48,5 +50,20 @@ public class Hub extends TimeBase {
                 .hubAddress(requestDto.hubAddress())
                 .geoLocation(new GeoLocation(requestDto.latitude(), requestDto.longitude()))
                 .build();
+    }
+
+    public void updateHub(UpdateHubRequestDto requestDto) {
+
+        if(requestDto.hubName() != null){
+            this.hubName = requestDto.hubName();
+        }
+        if(requestDto.hubAddress() != null){
+            this.hubAddress = requestDto.hubAddress();
+            this.geoLocation = new GeoLocation(requestDto.latitude(), requestDto.longitude());
+        }
+    }
+
+    public void deleteHub(String userName) {
+        super.setDeleted(userName);
     }
 }
