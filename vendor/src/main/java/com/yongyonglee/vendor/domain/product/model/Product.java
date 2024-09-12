@@ -1,10 +1,8 @@
-package com.yongyonglee.hub.domain.hub_route.model;
+package com.yongyonglee.vendor.domain.product.model;
 
-import com.yongyonglee.hub.domain.hub.model.Hub;
-import com.yongyonglee.hub.domain.hub_route.model.value_object.TransitTime;
-import com.yongyonglee.hub.domain.model.TimeBase;
+import com.yongyonglee.vendor.domain.vendor.model.Vendor;
+import com.yongyonglee.vendor.global.entity.TimeBase;
 import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -18,27 +16,27 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Entity(name = "p_hub_route")
+@Entity(name = "p_product")
 @Getter
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class HubRoute extends TimeBase {
+public class Product extends TimeBase {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "departure_id", nullable = false)
-    private Hub departureHub;
+    @JoinColumn(name = "vendor_id", nullable = false)
+    private Vendor vendor;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "arrival_id", nullable = false)
-    private Hub arrivalHub;
+    @Column(name = "hub_id", nullable = false)
+    private UUID hubId;
 
-    @Column(nullable = false)
-    private Integer distance;
+    @Column(name = "product_name", nullable = false, columnDefinition = "VARCHAR(100)")
+    private String productName;
 
-    @Embedded
-    private TransitTime transitTime;
+    @Column(name = "quantity", nullable = false)
+    private Integer quantity;
+
 }

@@ -2,12 +2,13 @@ package com.yongyonglee.hub.domain.hub.dto.response;
 
 import com.yongyonglee.hub.domain.hub.model.Hub;
 import java.time.LocalDateTime;
+import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.Builder;
 
 @Builder(access = AccessLevel.PRIVATE)
 public record HubResponseDto (
-        String hubId,
+        UUID hubId,
         String hubName,
         String hubAddress,
         Double latitude,
