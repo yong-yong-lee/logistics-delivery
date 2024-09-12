@@ -1,5 +1,9 @@
 package com.yongyonglee.vendor.domain.vendor.service;
 
+import static com.yongyonglee.vendor.domain.vendor.model.QVendor.vendor;
+import static java.util.Objects.isNull;
+
+import com.querydsl.core.BooleanBuilder;
 import com.yongyonglee.vendor.domain.vendor.dto.request.CreateVendorRequestDto;
 import com.yongyonglee.vendor.domain.vendor.dto.response.VendorResponseDto;
 import com.yongyonglee.vendor.domain.vendor.exception.VendorException;
@@ -9,8 +13,11 @@ import com.yongyonglee.vendor.domain.vendor.model.constant.VendorCategory;
 import com.yongyonglee.vendor.domain.vendor.repository.VendorRepository;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +43,33 @@ public class VendorServiceImpl implements VendorService {
         Vendor vendor = findById(vendorId);
 
         return VendorResponseDto.from(vendor);
+    }
+
+    @Override
+    public Page<VendorResponseDto> searchVendors(String vendorName, String vendorCategory,
+            UUID hubId, Pageable pageable) {
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // isDeleted가 false인 경우만 조회
+        builder.and(vendor.isDeleted.eq(false));
+
+        if(StringUtils.hasText(vendorName)){
+            builder.and(vendor.vendorName.containsIgnoreCase(vendorName));
+        }
+
+        if(StringUtils.hasText(vendorCategory)){
+            VendorCategory category = VendorCategory.findByCategory(vendorCategory);
+            builder.and(vendor.vendorCategory.eq(category));
+        }
+
+        if(!isNull(hubId)){
+            builder.and(vendor.hubId.eq(hubId));
+        }
+
+        Page<Vendor> vendors = vendorRepository.findAll(builder, pageable);
+
+        return vendors.map(VendorResponseDto::from);
     }
 
     public Vendor findById(UUID vendorId) {
