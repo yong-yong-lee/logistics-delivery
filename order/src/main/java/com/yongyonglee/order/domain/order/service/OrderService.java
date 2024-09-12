@@ -33,30 +33,29 @@ public class OrderService {
     }
 
     public OrderResponse getOrder(UUID orderId) {
-        Order order = orderRepository.findById(orderId)
-                .filter(o->!o.isDeleted())
-                .orElseThrow(()-> new CustomException(
-                ErrorCode.ORDER_ID_NOT_FOUND));
+        Order order = orderRepository.findByIdAndIsDeletedFalse(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_ID_NOT_FOUND));
 
         return order.toResponse();
     }
 
     public void deleteOrder(UUID orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(()-> new CustomException(
-                ErrorCode.ORDER_ID_NOT_FOUND));
+        Order order = orderRepository.findByIdAndIsDeletedFalse(orderId)
+                .orElseThrow(() -> new CustomException(ErrorCode.ORDER_ID_NOT_FOUND));
 
-        if (order.isDeleted()) {
-            throw new CustomException(ErrorCode.ORDER_ALREADY_DELETED);  // 이미 삭제된 경우 예외 처리
-        }
-
+        // 주문을 삭제 상태로 변경
         order.setDeleted();
         order.setDeletedAt(LocalDateTime.now());
 
+        // 변경된 주문 정보를 저장
+        orderRepository.save(order);
+
     }
 
+    @Transactional
     public OrderResponse updateOrder(UUID orderId, OrderUpdateDto orderUpdateDto) {
 
-        Order order = orderRepository.findById(orderId).orElseThrow(()-> new CustomException(
+        Order order = orderRepository.findByIdAndIsDeletedFalse(orderId).orElseThrow(()-> new CustomException(
                 ErrorCode.ORDER_ID_NOT_FOUND));
 
         if (orderUpdateDto.getQuantity() > 0){
