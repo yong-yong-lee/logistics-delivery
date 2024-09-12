@@ -16,7 +16,8 @@ public enum ErrorCode {
 
     //order
     ORDER_ID_NOT_FOUND(404, "주문 id 가 존재하지 않습니다."),
-    DELIVERY_ID_NOT_FOUND(404, "배송 id가 존재하지 않습니다.");
+    DELIVERY_ID_NOT_FOUND(404, "배송 id가 존재하지 않습니다."),
+    ORDER_ALREADY_DELETED(400, "이미 삭제된 주문입니다.");
 
     private final int status;
     private final String message;

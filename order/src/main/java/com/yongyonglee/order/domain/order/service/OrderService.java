@@ -7,6 +7,7 @@ import com.yongyonglee.order.domain.order.dto.OrderResponse;
 import com.yongyonglee.order.domain.order.repository.OrderRepository;
 import com.yongyonglee.order.global.response.CustomException;
 import com.yongyonglee.order.global.response.ErrorCode;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,9 +30,24 @@ public class OrderService {
     }
 
     public OrderResponse getOrder(UUID orderId) {
-        Order order = orderRepository.findById(orderId).orElseThrow(()-> new CustomException(
+        Order order = orderRepository.findById(orderId)
+                .filter(o->!o.isDeleted())
+                .orElseThrow(()-> new CustomException(
                 ErrorCode.ORDER_ID_NOT_FOUND));
 
         return order.toResponse();
+    }
+
+    public void deleteOrder(UUID orderId) {
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new CustomException(
+                ErrorCode.ORDER_ID_NOT_FOUND));
+
+        if (order.isDeleted()) {
+            throw new CustomException(ErrorCode.ORDER_ALREADY_DELETED);  // 이미 삭제된 경우 예외 처리
+        }
+
+        order.setDeleted();
+        order.setDeletedAt(LocalDateTime.now());
+
     }
 }

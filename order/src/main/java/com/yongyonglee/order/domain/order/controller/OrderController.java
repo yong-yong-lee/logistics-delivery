@@ -8,8 +8,10 @@ import com.yongyonglee.order.global.response.ApiResponse;
 import com.yongyonglee.order.domain.order.service.OrderService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -47,5 +49,14 @@ public class OrderController {
 
         return ResponseEntity.status(HttpStatus.OK).body(
                 ApiResponse.of("주문 조회 성공", orderResponse));
+    }
+
+    @DeleteMapping("/{orderId}")
+    public ResponseEntity<ApiResponse<Void>> deleteOrder(@PathVariable UUID orderId){
+
+        orderService.deleteOrder(orderId);
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+
     }
 }

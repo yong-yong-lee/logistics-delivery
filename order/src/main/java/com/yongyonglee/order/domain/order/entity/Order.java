@@ -12,12 +12,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.cglib.core.Local;
 
 @Getter
 @Entity
@@ -45,7 +47,7 @@ public class Order extends BaseTimeEntity {
     private int quantity;
 
     @Column(name = "is_deleted", nullable = false)
-    private boolean isDeleted;
+    private boolean isDeleted = false;
 
     @Setter
     @OneToOne(cascade = CascadeType.ALL)
@@ -63,4 +65,9 @@ public class Order extends BaseTimeEntity {
                 .build();
     }
 
+    public void setDeleted() {
+        this.isDeleted = true;
+        setDeletedAt(LocalDateTime.now());
+        setDeletedBy("삭제한 사용자"); //todo 삭제한 사용자 넣어야해요
+    }
 }
