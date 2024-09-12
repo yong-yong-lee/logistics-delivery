@@ -21,6 +21,7 @@ public class VendorServiceImpl implements VendorService {
 
         VendorCategory vendorCategory = VendorCategory.findByCategory(requestDto.vendorCategory());
 
+        // TODO: userId 가져오는 부분과 HubId 유효성 검사 로직 추가하기
         Vendor vendor = vendorRepository.save(Vendor.from(1L, vendorCategory, requestDto));
 
         return VendorResponseDto.from(vendor);
