@@ -1,5 +1,6 @@
 package com.yongyonglee.vendor.domain.vendor.model;
 
+import com.yongyonglee.vendor.domain.vendor.dto.request.CreateVendorRequestDto;
 import com.yongyonglee.vendor.domain.vendor.model.constant.VendorCategory;
 import com.yongyonglee.vendor.global.entity.TimeBase;
 import jakarta.persistence.Column;
@@ -12,6 +13,7 @@ import jakarta.persistence.Id;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -40,5 +42,26 @@ public class Vendor extends TimeBase {
 
     @Column(name = "vendor_address", nullable = false, columnDefinition = "VARCHAR(100)")
     private String vendorAddress;
+
+    @Builder(access = AccessLevel.PRIVATE)
+    public Vendor(Long userId, UUID hubId, String vendorName, VendorCategory vendorCategory,
+            String vendorAddress) {
+        this.userId = userId;
+        this.hubId = hubId;
+        this.vendorName = vendorName;
+        this.vendorCategory = vendorCategory;
+        this.vendorAddress = vendorAddress;
+    }
+
+    public static Vendor from(Long userId, VendorCategory vendorCategory, CreateVendorRequestDto requestDto) {
+
+        return Vendor.builder()
+                .userId(userId)
+                .hubId(requestDto.hubId())
+                .vendorName(requestDto.vendorName())
+                .vendorAddress(requestDto.vendorAddress())
+                .vendorCategory(vendorCategory)
+                .build();
+    }
 
 }
