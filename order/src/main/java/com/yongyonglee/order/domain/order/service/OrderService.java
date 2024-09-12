@@ -1,6 +1,8 @@
 package com.yongyonglee.order.domain.order.service;
 
 import com.yongyonglee.order.domain.delivery.entity.Delivery;
+import com.yongyonglee.order.domain.delivery.service.DeliveryService;
+import com.yongyonglee.order.domain.order.dto.OrderUpdateDto;
 import com.yongyonglee.order.domain.order.entity.Order;
 import com.yongyonglee.order.domain.order.dto.OrderCreateRequest;
 import com.yongyonglee.order.domain.order.dto.OrderResponse;
@@ -18,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class OrderService {
 
     private final OrderRepository orderRepository;
+    private final DeliveryService deliveryService;
 
     @Transactional
     public OrderResponse addOrder(OrderCreateRequest orderCreateRequest) {
@@ -48,6 +51,28 @@ public class OrderService {
 
         order.setDeleted();
         order.setDeletedAt(LocalDateTime.now());
+
+    }
+
+    public OrderResponse updateOrder(UUID orderId, OrderUpdateDto orderUpdateDto) {
+
+        Order order = orderRepository.findById(orderId).orElseThrow(()-> new CustomException(
+                ErrorCode.ORDER_ID_NOT_FOUND));
+
+        if (orderUpdateDto.getQuantity() > 0){
+            order.setQuantity(orderUpdateDto.getQuantity());
+        }
+
+        Delivery delivery = order.getDelivery();
+        if (delivery != null) {
+            deliveryService.updateDelivery(delivery.getId(), orderUpdateDto.getReceiverName(), orderUpdateDto.getReceiverSlackId());
+        } else {
+            throw new CustomException(ErrorCode.DELIVERY_NOT_FOUND);
+        }
+
+        orderRepository.save(order);
+
+        return order.toResponse();
 
     }
 }

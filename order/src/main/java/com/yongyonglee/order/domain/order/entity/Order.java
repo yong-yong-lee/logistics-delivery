@@ -43,6 +43,7 @@ public class Order extends BaseTimeEntity {
     @Column(name = "supply_id", nullable = false)
     private UUID supplyId;
 
+    @Setter
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
