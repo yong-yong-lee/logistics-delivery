@@ -1,9 +1,17 @@
 package com.yongyonglee.order.domain.route.service;
 
+import com.yongyonglee.order.domain.delivery.entity.DeliveryStatus;
 import com.yongyonglee.order.domain.order.dto.OrderCreateRequest;
+import com.yongyonglee.order.domain.route.HubRouteClient;
+import com.yongyonglee.order.domain.route.HubRouteResponse;
+import com.yongyonglee.order.domain.route.VendorClient;
+import com.yongyonglee.order.domain.route.VendorResponseDto;
 import com.yongyonglee.order.domain.route.entity.Route;
+import com.yongyonglee.order.global.response.CustomException;
+import com.yongyonglee.order.global.response.ErrorCode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -12,45 +20,65 @@ import org.springframework.stereotype.Service;
 @Service
 public class RouteService {
 
-//    private final HubRouteRepository hubRouteRepository;
+    private final HubRouteClient hubRouteClient;
+    private final VendorClient vendorClient;
+
+    public VendorResponseDto getVendorInfo(UUID vendorId) {
+
+        return Optional.ofNullable(vendorClient.getVendor(vendorId).getBody())
+                .orElseThrow(() -> new CustomException(ErrorCode.VENDOR_ID_NOT_FOUND));
+    }
+
+    public List<HubRouteResponse> getAllHubRoutes() {
+        return Optional.ofNullable(hubRouteClient.getAllHubRoutes().getBody())
+                .orElseThrow(() -> new CustomException(ErrorCode.RETRIEVE_FAILED));
+    }
+
 
     public List<Route> addRoute(OrderCreateRequest orderCreateRequest) {
 
-        //아마 vendor의 id로 알고 있습니다. 이 vendor가 속한 hub로 아래 start,end hub를 교체해야합니다.
+        UUID startHub = getVendorInfo(orderCreateRequest.getSupplyId()).hubId();
 
-//        UUID startHub = orderCreateRequest.getSupplyId();
-//
-//        int start = hubRouteRepository.findById(startHub).getlevel();
-//
-//        UUID endHub = orderCreateRequest.getDemandId();
-//
-//        int end = hubRouteRepository.findById(endHub).getlevel();
+        UUID endHub = getVendorInfo(orderCreateRequest.getDemandId()).hubId();
 
+        List<HubRouteResponse> hubRoutes = getAllHubRoutes();
+
+        return findRoutesBetweenHubs(startHub, endHub, hubRoutes);
+    }
+
+    private List<Route> findRoutesBetweenHubs(UUID startHub, UUID endHub,
+            List<HubRouteResponse> hubRoutes) {
         List<Route> routeList = new ArrayList<>();
-//        boolean isForward = start < end;
-//
-//        int currentHub = start;
-//
-//        while (currentHub != end) {
-//            int nextHub = isForward ? currentHub + 1 : currentHub - 1;
-//
-//            // 현재 허브에서 다음 허브로 가는 경로를 찾기
-//            List<HubRoute> nextRoutes = hubRouteRepository.findByStartHubAndEndHub(currentHub, nextHub);
-//
-//            if (nextRoutes.isEmpty()) {
-//                throw new RuntimeException("경로를 찾을 수 없습니다.");
-//            }
-//
-//            // 첫 번째 경로 선택 (필요시 더 나은 경로 선택 로직 추가 가능)
-//            HubRoute nextRoute = nextRoutes.get(0);
-//            routeList.add(nextRoute);
-//
-//            // 현재 허브를 다음 허브로 업데이트
-//            currentHub = nextRoute.getEndHub();
-//        }
+        UUID currentHub = startHub;
+        int sequence = 1;
 
+        while (!currentHub.equals(endHub)) {
+            HubRouteResponse nextHubRoute = findNextHubRoute(currentHub, hubRoutes)
+                    .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NEXT_HUB));
+
+            Route route = buildRoute(nextHubRoute, sequence++);
+            routeList.add(route);
+
+            currentHub = nextHubRoute.getEndHub();
+        }
 
         return routeList;
+    }
 
+    private Optional<HubRouteResponse> findNextHubRoute(UUID currentHub, List<HubRouteResponse> hubRoutes) {
+        return hubRoutes.stream()
+                .filter(hubRoute -> hubRoute.getStartHub().equals(currentHub))
+                .findFirst();
+    }
+
+    private Route buildRoute(HubRouteResponse hubRoute, int sequence) {
+        return Route.builder()
+                .departureId(hubRoute.getStartHub())
+                .arrivalId(hubRoute.getEndHub())
+                .sequence(sequence)
+                .estimatedDistance(hubRoute.getEstimatedDistance())
+                .estimatedTime(hubRoute.getEstimatedTime())
+                .status(DeliveryStatus.BEFORE_DELIVERY)
+                .build();
     }
 }
