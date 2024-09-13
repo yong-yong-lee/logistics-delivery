@@ -1,5 +1,8 @@
 package com.yongyonglee.vendor.domain.vendor.model.constant;
 
+import com.yongyonglee.vendor.domain.vendor.exception.VendorException;
+import com.yongyonglee.vendor.domain.vendor.message.ExceptionMessage;
+import java.util.Arrays;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -12,4 +15,11 @@ public enum VendorCategory {
 
     private final String category;
 
+    public static VendorCategory findByCategory(String category) {
+
+        return Arrays.stream(VendorCategory.values())
+                .filter(v -> v.getCategory().equals(category))
+                .findFirst()
+                .orElseThrow(() -> new VendorException(ExceptionMessage.VENDOR_CATEGORY_INVALID));
+    }
 }
