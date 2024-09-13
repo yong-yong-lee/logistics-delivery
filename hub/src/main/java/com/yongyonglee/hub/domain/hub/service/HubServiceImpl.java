@@ -96,6 +96,7 @@ public class HubServiceImpl implements HubService {
         hub.deleteHub("userName");
     }
 
+    @Override
     public Hub findById(UUID hubId) {
 
         return hubRepository.findByIdAndIsDeletedFalse(hubId)
