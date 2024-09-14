@@ -13,4 +13,6 @@ public interface VendorService {
     VendorResponseDto getVendor(UUID vendorId);
 
     Page<VendorResponseDto> searchVendors(String vendorName, String vendorCategory, UUID hubId, Pageable pageable);
+
+    void deleteVendor(UUID vendorId);
 }

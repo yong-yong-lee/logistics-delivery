@@ -64,4 +64,7 @@ public class Vendor extends TimeBase {
                 .build();
     }
 
+    public void deleteVendor(String userName) {
+        super.setDeleted(userName);
+    }
 }

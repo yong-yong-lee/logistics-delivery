@@ -72,6 +72,20 @@ public class VendorServiceImpl implements VendorService {
         return vendors.map(VendorResponseDto::from);
     }
 
+    @Override
+    public void deleteVendor(UUID vendorId) {
+
+        Vendor vendor = findById(vendorId);
+
+        // VENDOR_MANAGER라면 요청한 유저Id가 vendor.getUserId()와 동일한지 체크
+
+        vendor.deleteVendor("userName");
+
+        // TODO: product 삭제 로직
+//        productService.deleteRelatedVendorId(vendorId);
+
+    }
+
     public Vendor findById(UUID vendorId) {
         return vendorRepository.findByIdAndIsDeletedFalse(vendorId)
                 .orElseThrow(() -> new VendorException(ExceptionMessage.VENDOR_NOT_FOUND));

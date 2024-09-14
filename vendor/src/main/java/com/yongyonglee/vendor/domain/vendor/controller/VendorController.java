@@ -1,6 +1,7 @@
 package com.yongyonglee.vendor.domain.vendor.controller;
 
 import static com.yongyonglee.vendor.domain.vendor.message.SuccessMessage.CREATE_VENDOR_SUCCESS;
+import static com.yongyonglee.vendor.domain.vendor.message.SuccessMessage.DELETE_VENDOR_SUCCESS;
 import static com.yongyonglee.vendor.domain.vendor.message.SuccessMessage.GET_VENDOR_SUCCESS;
 import static com.yongyonglee.vendor.global.response.SuccessResponse.success;
 
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -57,5 +59,16 @@ public class VendorController {
     ) {
         return ResponseEntity.status(GET_VENDOR_SUCCESS.getHttpStatus())
                 .body(success(GET_VENDOR_SUCCESS.getMessage(), vendorService.searchVendors(vendorName, vendorCategory, hubId, pageable)));
+    }
+
+    /** 업체 삭제 api */
+    // TODO: 사용자 인증 및 인가(VENDOR_MANAGER, HUB_MANAGER, MASTER) 추가
+    @DeleteMapping("/{vendorId}")
+    public ResponseEntity<? extends CommonResponse> deleteVendor(@PathVariable UUID vendorId) {
+
+        vendorService.deleteVendor(vendorId);
+
+        return ResponseEntity.status(DELETE_VENDOR_SUCCESS.getHttpStatus())
+                .body(success(DELETE_VENDOR_SUCCESS.getMessage()));
     }
 }
