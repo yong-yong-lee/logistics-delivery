@@ -1,10 +1,11 @@
 package com.yongyonglee.hub.domain.hub_route.service;
 
-import com.yongyonglee.hub.domain.hub.message.ExceptionMessage;
 import com.yongyonglee.hub.domain.hub.model.Hub;
 import com.yongyonglee.hub.domain.hub.service.HubService;
 import com.yongyonglee.hub.domain.hub_route.dto.request.CreateHubRouteRequestDto;
+import com.yongyonglee.hub.domain.hub_route.dto.request.UpdateHubRouteRequestDto;
 import com.yongyonglee.hub.domain.hub_route.dto.response.HubRouteResponseDto;
+import com.yongyonglee.hub.domain.hub_route.message.ExceptionMessage;
 import com.yongyonglee.hub.domain.hub_route.exception.HubRouteException;
 import com.yongyonglee.hub.domain.hub_route.model.HubRoute;
 import com.yongyonglee.hub.domain.hub_route.repository.HubRouteRepository;
@@ -43,18 +44,31 @@ public class HubRouteServiceImpl implements HubRouteService{
     }
 
     @Override
-    public HubRoute findById(UUID hubRouteId) {
-
-        return hubRouteRepository.findByIdAndIsDeletedFalse(hubRouteId)
-                .orElseThrow(() -> new HubRouteException(ExceptionMessage.HUB_NOT_FOUND));
-    }
-
-    @Override
     public List<HubRouteResponseDto> getActiveHubRoutes() {
 
         return hubRouteRepository.findAllActiveHubRoutes()
                 .stream()
                 .map(HubRouteResponseDto::from)
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public HubRouteResponseDto updateHubRoute(UUID hubRouteId, UpdateHubRouteRequestDto requestDto) {
+
+        HubRoute hubRoute = findById(hubRouteId);
+
+//        if(user.getHubId() != hubRoute.getDepartureHub().getId()) {
+//            throw new HubRouteException(ExceptionMessage.HUB_ROUTE_UNAUTHORIZED);
+//        }
+        hubRoute.updateHubRoute(requestDto);
+
+        return HubRouteResponseDto.from(hubRoute);
+    }
+
+    @Override
+    public HubRoute findById(UUID hubRouteId) {
+
+        return hubRouteRepository.findByIdAndIsDeletedFalse(hubRouteId)
+                .orElseThrow(() -> new HubRouteException(ExceptionMessage.HUB_ROUTE_NOT_FOUND));
     }
 }

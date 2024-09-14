@@ -2,6 +2,7 @@ package com.yongyonglee.hub.domain.hub_route.model;
 
 import com.yongyonglee.hub.domain.hub.model.Hub;
 import com.yongyonglee.hub.domain.hub_route.dto.request.CreateHubRouteRequestDto;
+import com.yongyonglee.hub.domain.hub_route.dto.request.UpdateHubRouteRequestDto;
 import com.yongyonglee.hub.domain.model.TimeBase;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -59,5 +60,10 @@ public class HubRoute extends TimeBase {
                 .distance(requestDto.distance())
                 .transitTime(requestDto.transitTime())
                 .build();
+    }
+
+    public void updateHubRoute(UpdateHubRouteRequestDto requestDto) {
+        this.distance = requestDto.distance();
+        this.transitTime = requestDto.transitTime();
     }
 }

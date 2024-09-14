@@ -2,9 +2,11 @@ package com.yongyonglee.hub.domain.hub_route.controller;
 
 import static com.yongyonglee.hub.domain.hub_route.message.SuccessMessage.CREATE_HUB_ROUTE_SUCCESS;
 import static com.yongyonglee.hub.domain.hub_route.message.SuccessMessage.GET_HUB_ROUTE_SUCCESS;
+import static com.yongyonglee.hub.domain.hub_route.message.SuccessMessage.UPDATE_HUB_ROUTE_SUCCESS;
 import static com.yongyonglee.hub.global.response.SuccessResponse.success;
 
 import com.yongyonglee.hub.domain.hub_route.dto.request.CreateHubRouteRequestDto;
+import com.yongyonglee.hub.domain.hub_route.dto.request.UpdateHubRouteRequestDto;
 import com.yongyonglee.hub.domain.hub_route.service.HubRouteService;
 import com.yongyonglee.hub.global.response.CommonResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -15,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -52,5 +55,14 @@ public class HubRouteController {
 
         return ResponseEntity.status(GET_HUB_ROUTE_SUCCESS.getHttpStatus())
                 .body(success(GET_HUB_ROUTE_SUCCESS.getMessage(), hubRouteService.getActiveHubRoutes()));
+    }
+
+    /** 허브 루트 수정 api */
+    // TODO: 사용자 인증 및 인가(HUB_MANAGER, MASTER) 추가
+    @PutMapping("/{hubRouteId}")
+    public ResponseEntity<? extends CommonResponse> updateHubRoute(@PathVariable UUID hubRouteId, @RequestBody UpdateHubRouteRequestDto requestDto) {
+
+        return ResponseEntity.status(UPDATE_HUB_ROUTE_SUCCESS.getHttpStatus())
+                .body(success(UPDATE_HUB_ROUTE_SUCCESS.getMessage(), hubRouteService.updateHubRoute(hubRouteId, requestDto)));
     }
 }
