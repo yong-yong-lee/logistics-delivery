@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,11 +38,19 @@ public class HubRouteController {
 
     /** 허브 루트 단건 조회 api */
     // TODO: 사용자 인증 및 인가(HUB_MANAGER, MASTER) 추가
-    @PostMapping("/{hubRouteId}")
+    @GetMapping("/{hubRouteId}")
     public ResponseEntity<? extends CommonResponse> getHubRoute(@PathVariable UUID hubRouteId) {
 
         return ResponseEntity.status(GET_HUB_ROUTE_SUCCESS.getHttpStatus())
                 .body(success(GET_HUB_ROUTE_SUCCESS.getMessage(), hubRouteService.getHubRoute(hubRouteId)));
     }
 
+    /** 허브 루트 전체 조회 api */
+    // TODO: 사용자 인증 및 인가(HUB_MANAGER, MASTER) 추가
+    @GetMapping("")
+    public ResponseEntity<? extends CommonResponse> getHubRoutes() {
+
+        return ResponseEntity.status(GET_HUB_ROUTE_SUCCESS.getHttpStatus())
+                .body(success(GET_HUB_ROUTE_SUCCESS.getMessage(), hubRouteService.getActiveHubRoutes()));
+    }
 }

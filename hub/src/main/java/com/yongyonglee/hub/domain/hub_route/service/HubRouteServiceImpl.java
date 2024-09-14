@@ -8,7 +8,9 @@ import com.yongyonglee.hub.domain.hub_route.dto.response.HubRouteResponseDto;
 import com.yongyonglee.hub.domain.hub_route.exception.HubRouteException;
 import com.yongyonglee.hub.domain.hub_route.model.HubRoute;
 import com.yongyonglee.hub.domain.hub_route.repository.HubRouteRepository;
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,5 +49,12 @@ public class HubRouteServiceImpl implements HubRouteService{
                 .orElseThrow(() -> new HubRouteException(ExceptionMessage.HUB_NOT_FOUND));
     }
 
+    @Override
+    public List<HubRouteResponseDto> getActiveHubRoutes() {
 
+        return hubRouteRepository.findAllActiveHubRoutes()
+                .stream()
+                .map(HubRouteResponseDto::from)
+                .collect(Collectors.toList());
+    }
 }
