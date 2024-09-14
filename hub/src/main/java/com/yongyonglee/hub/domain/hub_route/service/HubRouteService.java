@@ -17,5 +17,7 @@ public interface HubRouteService {
 
     HubRouteResponseDto updateHubRoute(UUID hubRouteId, UpdateHubRouteRequestDto requestDto);
 
+    void deleteHubRoute(UUID hubRouteId);
+
     HubRoute findById(UUID hubRouteId);
 }

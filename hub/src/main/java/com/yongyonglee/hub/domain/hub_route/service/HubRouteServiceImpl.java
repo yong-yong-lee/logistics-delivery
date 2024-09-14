@@ -66,6 +66,15 @@ public class HubRouteServiceImpl implements HubRouteService{
     }
 
     @Override
+    public void deleteHubRoute(UUID hubRouteId) {
+
+        HubRoute hubRoute = findById(hubRouteId);
+
+        // TODO: 사용자 정보 가져오기
+        hubRoute.deleteHubRoute("userName");
+    }
+
+    @Override
     public HubRoute findById(UUID hubRouteId) {
 
         return hubRouteRepository.findByIdAndIsDeletedFalse(hubRouteId)

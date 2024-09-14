@@ -66,4 +66,8 @@ public class HubRoute extends TimeBase {
         this.distance = requestDto.distance();
         this.transitTime = requestDto.transitTime();
     }
+
+    public void deleteHubRoute(String userName) {
+        super.setDeleted(userName);
+    }
 }
