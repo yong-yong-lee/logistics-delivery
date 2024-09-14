@@ -10,6 +10,7 @@ import com.yongyonglee.hub.domain.hub_route.dto.request.CreateHubRouteRequestDto
 import com.yongyonglee.hub.domain.hub_route.dto.request.UpdateHubRouteRequestDto;
 import com.yongyonglee.hub.domain.hub_route.service.HubRouteService;
 import com.yongyonglee.hub.global.response.CommonResponse;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import java.util.UUID;
@@ -35,6 +36,7 @@ public class HubRouteController {
     /** 허브 루트 생성 api */
     // TODO: 사용자 인증 및 인가(HUB_MANAGER, MASTER) 추가
     @PostMapping("")
+    @Operation(summary = "허브 이동정보 생성", description = "허브 이동정보를 생성할 때 사용하는 API")
     public ResponseEntity<? extends CommonResponse> createHubRoute(@Valid @RequestBody CreateHubRouteRequestDto requestDto) {
 
         return ResponseEntity.status(CREATE_HUB_ROUTE_SUCCESS.getHttpStatus())
@@ -44,6 +46,7 @@ public class HubRouteController {
     /** 허브 루트 단건 조회 api */
     // TODO: 사용자 인증 및 인가(HUB_MANAGER, MASTER) 추가
     @GetMapping("/{hubRouteId}")
+    @Operation(summary = "허브 이동정보 단건 조회", description = "허브 이동정보를 단건 조회할 때 사용하는 API")
     public ResponseEntity<? extends CommonResponse> getHubRoute(@PathVariable UUID hubRouteId) {
 
         return ResponseEntity.status(GET_HUB_ROUTE_SUCCESS.getHttpStatus())
@@ -53,6 +56,7 @@ public class HubRouteController {
     /** 허브 루트 전체 조회 api */
     // TODO: 사용자 인증 및 인가(HUB_MANAGER, MASTER) 추가
     @GetMapping("")
+    @Operation(summary = "허브 이동정보 전체 조회", description = "허브 이동정보를 전체 조회할 때 사용하는 API")
     public ResponseEntity<? extends CommonResponse> getHubRoutes() {
 
         return ResponseEntity.status(GET_HUB_ROUTE_SUCCESS.getHttpStatus())
@@ -62,6 +66,7 @@ public class HubRouteController {
     /** 허브 루트 수정 api */
     // TODO: 사용자 인증 및 인가(HUB_MANAGER, MASTER) 추가
     @PutMapping("/{hubRouteId}")
+    @Operation(summary = "허브 이동정보 수정", description = "허브 이동정보를 수정할 때 사용하는 API")
     public ResponseEntity<? extends CommonResponse> updateHubRoute(@PathVariable UUID hubRouteId, @RequestBody UpdateHubRouteRequestDto requestDto) {
 
         return ResponseEntity.status(UPDATE_HUB_ROUTE_SUCCESS.getHttpStatus())
@@ -71,6 +76,7 @@ public class HubRouteController {
     /** 허브 루트 삭제 api */
     // TODO: 사용자 인증 및 인가(HUB_MANAGER, MASTER) 추가
     @DeleteMapping("/{hubRouteId}")
+    @Operation(summary = "허브 이동정보 삭제", description = "허브 이동정보를 삭제할 때 사용하는 API")
     public ResponseEntity<? extends CommonResponse> deleteHubRoute(@PathVariable(name = "hubRouteId") UUID hubRouteId) {
 
         hubRouteService.deleteHubRoute(hubRouteId);
