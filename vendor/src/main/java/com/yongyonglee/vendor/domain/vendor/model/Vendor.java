@@ -1,6 +1,7 @@
 package com.yongyonglee.vendor.domain.vendor.model;
 
 import com.yongyonglee.vendor.domain.vendor.dto.request.CreateVendorRequestDto;
+import com.yongyonglee.vendor.domain.vendor.dto.request.UpdateVendorRequestDto;
 import com.yongyonglee.vendor.domain.vendor.model.constant.VendorCategory;
 import com.yongyonglee.vendor.global.entity.TimeBase;
 import jakarta.persistence.Column;
@@ -62,6 +63,24 @@ public class Vendor extends TimeBase {
                 .vendorAddress(requestDto.vendorAddress())
                 .vendorCategory(vendorCategory)
                 .build();
+    }
+
+    public void updateVendor(UpdateVendorRequestDto requestDto) {
+        if (requestDto.userId() != null) {
+            this.userId = requestDto.userId();
+        }
+        if (requestDto.hubId() != null) {
+            this.hubId = requestDto.hubId();
+        }
+        if (requestDto.vendorName() != null) {
+            this.vendorName = requestDto.vendorName();
+        }
+        if (requestDto.vendorCategory() != null) {
+            this.vendorCategory = VendorCategory.findByCategory(requestDto.vendorCategory());
+        }
+        if (requestDto.vendorAddress() != null) {
+            this.vendorAddress = requestDto.vendorAddress();
+        }
     }
 
     public void deleteVendor(String userName) {

@@ -4,7 +4,9 @@ import static com.yongyonglee.vendor.domain.vendor.model.QVendor.vendor;
 import static java.util.Objects.isNull;
 
 import com.querydsl.core.BooleanBuilder;
+import com.yongyonglee.vendor.domain.client.HubClient;
 import com.yongyonglee.vendor.domain.vendor.dto.request.CreateVendorRequestDto;
+import com.yongyonglee.vendor.domain.vendor.dto.request.UpdateVendorRequestDto;
 import com.yongyonglee.vendor.domain.vendor.dto.response.VendorResponseDto;
 import com.yongyonglee.vendor.domain.vendor.exception.VendorException;
 import com.yongyonglee.vendor.domain.vendor.message.ExceptionMessage;
@@ -25,6 +27,7 @@ import org.springframework.util.StringUtils;
 public class VendorServiceImpl implements VendorService {
 
     private final VendorRepository vendorRepository;
+    private final HubClient hubClient;
 
     @Override
     public VendorResponseDto createVendor(CreateVendorRequestDto requestDto) {
@@ -73,6 +76,23 @@ public class VendorServiceImpl implements VendorService {
     }
 
     @Override
+    public VendorResponseDto updateVendor(UUID vendorId, UpdateVendorRequestDto requestDto) {
+
+        Vendor vendor = findById(vendorId);
+
+        if(requestDto.hubId() != null) {
+            // hub-service에 해당 허브가 존재하는지 조회
+            if(!hubClient.isExistHub(requestDto.hubId())) {
+                throw new VendorException(ExceptionMessage.HUB_NOT_FOUND);
+            }
+        }
+
+        vendor.updateVendor(requestDto);
+
+        return VendorResponseDto.from(vendor);
+    }
+
+    @Override
     public void deleteVendor(UUID vendorId) {
 
         Vendor vendor = findById(vendorId);
@@ -83,7 +103,6 @@ public class VendorServiceImpl implements VendorService {
 
         // TODO: product 삭제 로직
 //        productService.deleteRelatedVendorId(vendorId);
-
     }
 
     public Vendor findById(UUID vendorId) {
