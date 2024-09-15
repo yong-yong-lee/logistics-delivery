@@ -18,9 +18,4 @@ public record HubRouteResponseDto (
         Integer distance,
 
         Integer transitTime
-) {
-
-//    public Object getDepartureId() {
-//        return departureId;
-//    }
-}
+) {}
