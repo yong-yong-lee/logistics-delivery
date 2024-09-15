@@ -46,7 +46,7 @@ public class Route extends BaseTimeEntity {
     private Integer estimatedDistance;
 
     @Column(name = "estimated_time", nullable = false)
-    private Timestamp estimatedTime;
+    private Integer estimatedTime;
 
     @Column(name = "actual_distance")
     private Integer actualDistance;

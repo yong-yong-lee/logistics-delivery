@@ -3,7 +3,8 @@ package com.yongyonglee.order.domain.route.service;
 import com.yongyonglee.order.domain.delivery.entity.DeliveryStatus;
 import com.yongyonglee.order.domain.order.dto.OrderCreateRequest;
 import com.yongyonglee.order.domain.route.HubRouteClient;
-import com.yongyonglee.order.domain.route.HubRouteResponse;
+
+import com.yongyonglee.order.domain.route.HubRouteResponseDto;
 import com.yongyonglee.order.domain.route.VendorClient;
 import com.yongyonglee.order.domain.route.VendorResponseDto;
 import com.yongyonglee.order.domain.route.entity.Route;
@@ -29,7 +30,7 @@ public class RouteService {
                 .orElseThrow(() -> new CustomException(ErrorCode.VENDOR_ID_NOT_FOUND));
     }
 
-    public List<HubRouteResponse> getAllHubRoutes() {
+    public List<HubRouteResponseDto> getAllHubRoutes() {
         return Optional.ofNullable(hubRouteClient.getAllHubRoutes().getBody())
                 .orElseThrow(() -> new CustomException(ErrorCode.RETRIEVE_FAILED));
     }
@@ -41,43 +42,43 @@ public class RouteService {
 
         UUID endHub = getVendorInfo(orderCreateRequest.getDemandId()).hubId();
 
-        List<HubRouteResponse> hubRoutes = getAllHubRoutes();
+        List<HubRouteResponseDto> hubRoutes = getAllHubRoutes();
 
         return findRoutesBetweenHubs(startHub, endHub, hubRoutes);
     }
 
     private List<Route> findRoutesBetweenHubs(UUID startHub, UUID endHub,
-            List<HubRouteResponse> hubRoutes) {
+            List<HubRouteResponseDto> hubRoutes) {
         List<Route> routeList = new ArrayList<>();
         UUID currentHub = startHub;
         int sequence = 1;
 
         while (!currentHub.equals(endHub)) {
-            HubRouteResponse nextHubRoute = findNextHubRoute(currentHub, hubRoutes)
+            HubRouteResponseDto nextHubRoute = findNextHubRoute(currentHub, hubRoutes)
                     .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_NEXT_HUB));
 
             Route route = buildRoute(nextHubRoute, sequence++);
             routeList.add(route);
 
-            currentHub = nextHubRoute.getEndHub();
+            currentHub = nextHubRoute.arrivalId();
         }
 
         return routeList;
     }
 
-    private Optional<HubRouteResponse> findNextHubRoute(UUID currentHub, List<HubRouteResponse> hubRoutes) {
+    private Optional<HubRouteResponseDto> findNextHubRoute(UUID currentHub, List<HubRouteResponseDto> hubRoutes) {
         return hubRoutes.stream()
-                .filter(hubRoute -> hubRoute.getStartHub().equals(currentHub))
+                .filter(hubRoute -> hubRoute.departureId().equals(currentHub))
                 .findFirst();
     }
 
-    private Route buildRoute(HubRouteResponse hubRoute, int sequence) {
+    private Route buildRoute(HubRouteResponseDto hubRoute, int sequence) {
         return Route.builder()
-                .departureId(hubRoute.getStartHub())
-                .arrivalId(hubRoute.getEndHub())
+                .departureId(hubRoute.departureId())
+                .arrivalId(hubRoute.arrivalId())
                 .sequence(sequence)
-                .estimatedDistance(hubRoute.getEstimatedDistance())
-                .estimatedTime(hubRoute.getEstimatedTime())
+                .estimatedDistance(hubRoute.distance())
+                .estimatedTime(hubRoute.transitTime())
                 .status(DeliveryStatus.BEFORE_DELIVERY)
                 .build();
     }
