@@ -1,6 +1,6 @@
 package com.yongyonglee.hub.domain.hub_route.exception;
 
-import com.yongyonglee.hub.domain.hub.message.ExceptionMessage;
+import com.yongyonglee.hub.domain.hub_route.message.ExceptionMessage;
 import org.springframework.http.HttpStatus;
 
 public class HubRouteException extends RuntimeException {

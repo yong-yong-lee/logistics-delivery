@@ -1,5 +1,7 @@
 package com.yongyonglee.hub.domain.hub.service;
 
+import static com.yongyonglee.hub.domain.hub.model.QHub.hub;
+
 import com.querydsl.core.BooleanBuilder;
 import com.yongyonglee.hub.domain.hub.dto.request.CreateHubRequestDto;
 import com.yongyonglee.hub.domain.hub.dto.request.UpdateHubRequestDto;
@@ -9,6 +11,7 @@ import com.yongyonglee.hub.domain.hub.exception.HubException;
 import com.yongyonglee.hub.domain.hub.message.ExceptionMessage;
 import com.yongyonglee.hub.domain.hub.model.Hub;
 import com.yongyonglee.hub.domain.hub.repository.HubRepository;
+import com.yongyonglee.hub.domain.hub_route.service.HubRouteHelper;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,14 +20,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import static com.yongyonglee.hub.domain.hub.model.QHub.hub;
-
 @Service
 @RequiredArgsConstructor
 @Transactional
 public class HubServiceImpl implements HubService {
 
     private final HubRepository hubRepository;
+    private final HubRouteHelper hubRouteHelper;
 
     @Override
     public CreateHubResponseDto createHub(CreateHubRequestDto requestDto) {
@@ -94,8 +96,13 @@ public class HubServiceImpl implements HubService {
 
         // TODO: 사용자 정보 가져오기
         hub.deleteHub("userName");
+
+        // hub 삭제시, 해당 hub의 hubroute 정보도 삭제하는 로직 추가
+        hubRouteHelper.deleteHubRoutesByHubId(hubId, "userName");
+
     }
 
+    @Override
     public Hub findById(UUID hubId) {
 
         return hubRepository.findByIdAndIsDeletedFalse(hubId)
