@@ -12,11 +12,20 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import java.sql.Timestamp;
 import java.util.UUID;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Route extends BaseTimeEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     @ManyToOne
@@ -29,6 +38,7 @@ public class Route extends BaseTimeEntity {
     @Column(name = "arrival_id")
     private UUID arrivalId;
 
+    @Setter
     @Column(nullable = false)
     private int sequence;
 
