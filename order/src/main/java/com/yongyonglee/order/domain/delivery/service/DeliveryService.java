@@ -1,12 +1,13 @@
 package com.yongyonglee.order.domain.delivery.service;
 
 import com.yongyonglee.order.domain.delivery.dto.DeliveryResponse;
+import com.yongyonglee.order.domain.delivery.dto.DeliveryUpdateDto;
 import com.yongyonglee.order.domain.delivery.entity.Delivery;
 import com.yongyonglee.order.domain.delivery.entity.DeliveryStatus;
 import com.yongyonglee.order.domain.delivery.repository.DeliveryRepository;
 import com.yongyonglee.order.domain.order.dto.OrderCreateRequest;
 import com.yongyonglee.order.domain.route.VendorClient;
-import com.yongyonglee.order.domain.route.VendorResponseDto;
+import com.yongyonglee.order.domain.route.dto.VendorResponseDto;
 import com.yongyonglee.order.domain.route.entity.Route;
 import com.yongyonglee.order.domain.route.service.RouteService;
 import com.yongyonglee.order.global.response.CustomException;
@@ -79,5 +80,36 @@ public class DeliveryService {
         }
 
         deliveryRepository.save(delivery);
+    }
+
+    @Transactional
+    public void deleteDeliveryById(UUID deliveryId) {
+        Delivery delivery = deliveryRepository.findById(deliveryId).orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_NOT_FOUND));;
+
+        delivery.setDeleted();
+
+        deliveryRepository.save(delivery);
+    }
+
+    @Transactional
+    public DeliveryResponse updateDeliveryStatus(UUID deliveryId,
+            DeliveryUpdateDto deliveryUpdateDto) {
+
+        Delivery delivery = deliveryRepository.findById(deliveryId)
+                .orElseThrow(() -> new CustomException(ErrorCode.DELIVERY_NOT_FOUND));
+
+        if (deliveryUpdateDto.getStatus() != null) {
+            try {
+                DeliveryStatus status = DeliveryStatus.valueOf(
+                        String.valueOf(deliveryUpdateDto.getStatus()));
+                delivery.setStatus(status);
+            } catch (IllegalArgumentException e) {
+                throw new CustomException(ErrorCode.INVALID_STATUS);
+            }
+        }
+
+        deliveryRepository.save(delivery);
+
+        return delivery.toResponse();
     }
 }
