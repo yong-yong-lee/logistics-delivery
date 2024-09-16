@@ -11,12 +11,16 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -41,5 +45,18 @@ public class ProductController {
     public ResponseEntity<? extends CommonResponse> getProduct(@PathVariable UUID productId) {
         return ResponseEntity.status(GET_PRODUCT_SUCCESS.getHttpStatus())
                 .body(success(GET_PRODUCT_SUCCESS.getMessage(), productService.getProduct(productId)));
+    }
+
+    // TODO: 사용자 인증 및 인가(VENDOR_MANAGER, HUB_MANAGE, MASTER) 추가
+    @Operation(summary = "상품 검색", description = "상품을 검색할 때 사용하는 API")
+    @GetMapping("")
+    public ResponseEntity<? extends CommonResponse> searchProducts(
+            @RequestParam(required = false) UUID vendorId,
+            @RequestParam(required = false) UUID hubId,
+            @RequestParam(required = false) String productName,
+            @PageableDefault(sort = "createdAt", direction = Direction.DESC) Pageable pageable) {
+
+        return ResponseEntity.status(GET_PRODUCT_SUCCESS.getHttpStatus())
+                .body(success(GET_PRODUCT_SUCCESS.getMessage(), productService.searchProducts(vendorId, hubId, productName, pageable)));
     }
 }

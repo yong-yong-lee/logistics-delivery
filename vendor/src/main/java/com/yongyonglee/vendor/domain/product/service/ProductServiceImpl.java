@@ -1,5 +1,9 @@
 package com.yongyonglee.vendor.domain.product.service;
 
+import static com.yongyonglee.vendor.domain.product.model.QProduct.product;
+import static java.util.Objects.isNull;
+
+import com.querydsl.core.BooleanBuilder;
 import com.yongyonglee.vendor.domain.product.dto.request.CreateProductRequestDto;
 import com.yongyonglee.vendor.domain.product.dto.response.ProductResponseDto;
 import com.yongyonglee.vendor.domain.product.exception.ProductException;
@@ -10,7 +14,10 @@ import com.yongyonglee.vendor.domain.vendor.model.Vendor;
 import com.yongyonglee.vendor.domain.vendor.service.VendorService;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +50,31 @@ public class ProductServiceImpl implements ProductService{
 
         return productRepository.findByIdAndIsDeletedFalse(productId)
                 .orElseThrow(() -> new ProductException(ExceptionMessage.PRODUCT_NOT_FOUND));
+    }
+
+    @Override
+    public Page<ProductResponseDto> searchProducts(UUID vendorId, UUID hubId, String productName,
+            Pageable pageable) {
+
+        BooleanBuilder builder = new BooleanBuilder();
+
+        // isDeleted가 false인 경우만 조회
+        builder.and(product.isDeleted.eq(false));
+
+        if(!isNull(vendorId)){
+            builder.and(product.vendor.id.eq(vendorId));
+        }
+
+        if(!isNull(hubId)){
+            builder.and(product.hubId.eq(hubId));
+        }
+
+        if(StringUtils.hasText(productName)){
+            builder.and(product.productName.containsIgnoreCase(productName));
+        }
+
+        Page<Product> products = productRepository.findAll(builder, pageable);
+
+        return products.map(ProductResponseDto::from);
     }
 }
