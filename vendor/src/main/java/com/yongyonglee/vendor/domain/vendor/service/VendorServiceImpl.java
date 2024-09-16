@@ -105,6 +105,7 @@ public class VendorServiceImpl implements VendorService {
 //        productService.deleteRelatedVendorId(vendorId);
     }
 
+    @Override
     public Vendor findById(UUID vendorId) {
         return vendorRepository.findByIdAndIsDeletedFalse(vendorId)
                 .orElseThrow(() -> new VendorException(ExceptionMessage.VENDOR_NOT_FOUND));
