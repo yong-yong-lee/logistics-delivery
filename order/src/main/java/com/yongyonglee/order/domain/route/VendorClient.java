@@ -1,5 +1,6 @@
 package com.yongyonglee.order.domain.route;
 
+import com.yongyonglee.order.domain.route.dto.VendorResponseDto;
 import java.util.UUID;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;

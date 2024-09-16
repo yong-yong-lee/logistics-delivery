@@ -1,4 +1,4 @@
-package com.yongyonglee.order.domain.route;
+package com.yongyonglee.order.domain.route.dto;
 
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 
 @Getter
-@Builder(access = AccessLevel.PRIVATE)
-public record HubRouteResponseDto (
+@Builder(access = AccessLevel.PUBLIC)
+public record HubRouteResponseDto(
 
         UUID hubRouteId,
 
@@ -18,4 +18,6 @@ public record HubRouteResponseDto (
         Integer distance,
 
         Integer transitTime
-) {}
+) {
+
+}
