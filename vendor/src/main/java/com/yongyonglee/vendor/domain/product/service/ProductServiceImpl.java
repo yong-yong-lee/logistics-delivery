@@ -86,6 +86,14 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public void deleteProduct(UUID productId) {
+
+        Product product = findById(productId);
+
+        product.deleteProduct("userName");
+    }
+
+    @Override
     public Product findById(UUID productId) {
 
         return productRepository.findByIdAndIsDeletedFalse(productId)

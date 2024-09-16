@@ -18,5 +18,7 @@ public interface ProductService {
 
     ProductResponseDto updateProductQuantity(UUID productId, UpdateProductQuantityRequestDto requestDto);
 
+    void deleteProduct(UUID productId);
+
     Product findById(UUID productId);
 }

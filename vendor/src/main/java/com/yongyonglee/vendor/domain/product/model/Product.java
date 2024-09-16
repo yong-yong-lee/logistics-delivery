@@ -52,4 +52,8 @@ public class Product extends TimeBase {
     public void updateQuantity(Integer quantity) {
         this.quantity = quantity;
     }
+
+    public void deleteProduct(String userName) {
+        super.setDeleted(userName);
+    }
 }
