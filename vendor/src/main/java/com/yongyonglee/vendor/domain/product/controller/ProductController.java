@@ -2,9 +2,11 @@ package com.yongyonglee.vendor.domain.product.controller;
 
 import static com.yongyonglee.vendor.domain.product.message.SuccessMessage.CREATE_PRODUCT_SUCCESS;
 import static com.yongyonglee.vendor.domain.product.message.SuccessMessage.GET_PRODUCT_SUCCESS;
+import static com.yongyonglee.vendor.domain.product.message.SuccessMessage.UPDATE_PRODUCT_SUCCESS;
 import static com.yongyonglee.vendor.global.response.SuccessResponse.success;
 
 import com.yongyonglee.vendor.domain.product.dto.request.CreateProductRequestDto;
+import com.yongyonglee.vendor.domain.product.dto.request.UpdateProductQuantityRequestDto;
 import com.yongyonglee.vendor.domain.product.service.ProductService;
 import com.yongyonglee.vendor.global.response.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
@@ -16,6 +18,7 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -58,5 +61,16 @@ public class ProductController {
 
         return ResponseEntity.status(GET_PRODUCT_SUCCESS.getHttpStatus())
                 .body(success(GET_PRODUCT_SUCCESS.getMessage(), productService.searchProducts(vendorId, hubId, productName, pageable)));
+    }
+
+    // TODO: 사용자 인증 및 인가(VENDOR_MANAGER, HUB_MANAGE, MASTER) 추가
+    @Operation(summary = "상품 수량 변경", description = "상품 수량을 변경할 때 사용하는 API")
+    @PatchMapping("/{productId}/quantity")
+    public ResponseEntity<? extends CommonResponse> updateProductQuantity(
+            @PathVariable UUID productId,
+            @RequestBody UpdateProductQuantityRequestDto requestDto) {
+
+        return ResponseEntity.status(UPDATE_PRODUCT_SUCCESS.getHttpStatus())
+                .body(success(UPDATE_PRODUCT_SUCCESS.getMessage(), productService.updateProductQuantity(productId, requestDto)));
     }
 }

@@ -48,4 +48,8 @@ public class Product extends TimeBase {
         this.productName = productName;
         this.quantity = quantity;
     }
+
+    public void updateQuantity(Integer quantity) {
+        this.quantity = quantity;
+    }
 }

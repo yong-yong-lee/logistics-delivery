@@ -5,6 +5,7 @@ import static java.util.Objects.isNull;
 
 import com.querydsl.core.BooleanBuilder;
 import com.yongyonglee.vendor.domain.product.dto.request.CreateProductRequestDto;
+import com.yongyonglee.vendor.domain.product.dto.request.UpdateProductQuantityRequestDto;
 import com.yongyonglee.vendor.domain.product.dto.response.ProductResponseDto;
 import com.yongyonglee.vendor.domain.product.exception.ProductException;
 import com.yongyonglee.vendor.domain.product.message.ExceptionMessage;
@@ -17,11 +18,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 @Service
 @RequiredArgsConstructor
-public class ProductServiceImpl implements ProductService{
+@Transactional
+public class ProductServiceImpl implements ProductService {
 
     private final ProductRepository productRepository;
     private final VendorService vendorService;
@@ -46,13 +49,6 @@ public class ProductServiceImpl implements ProductService{
     }
 
     @Override
-    public Product findById(UUID productId) {
-
-        return productRepository.findByIdAndIsDeletedFalse(productId)
-                .orElseThrow(() -> new ProductException(ExceptionMessage.PRODUCT_NOT_FOUND));
-    }
-
-    @Override
     public Page<ProductResponseDto> searchProducts(UUID vendorId, UUID hubId, String productName,
             Pageable pageable) {
 
@@ -61,20 +57,38 @@ public class ProductServiceImpl implements ProductService{
         // isDeleted가 false인 경우만 조회
         builder.and(product.isDeleted.eq(false));
 
-        if(!isNull(vendorId)){
+        if (!isNull(vendorId)) {
             builder.and(product.vendor.id.eq(vendorId));
         }
 
-        if(!isNull(hubId)){
+        if (!isNull(hubId)) {
             builder.and(product.hubId.eq(hubId));
         }
 
-        if(StringUtils.hasText(productName)){
+        if (StringUtils.hasText(productName)) {
             builder.and(product.productName.containsIgnoreCase(productName));
         }
 
         Page<Product> products = productRepository.findAll(builder, pageable);
 
         return products.map(ProductResponseDto::from);
+    }
+
+    @Override
+    public ProductResponseDto updateProductQuantity(UUID productId,
+            UpdateProductQuantityRequestDto requestDto) {
+
+        Product product = findById(productId);
+
+        product.updateQuantity(requestDto.quantity());
+
+        return ProductResponseDto.from(product);
+    }
+
+    @Override
+    public Product findById(UUID productId) {
+
+        return productRepository.findByIdAndIsDeletedFalse(productId)
+                .orElseThrow(() -> new ProductException(ExceptionMessage.PRODUCT_NOT_FOUND));
     }
 }
