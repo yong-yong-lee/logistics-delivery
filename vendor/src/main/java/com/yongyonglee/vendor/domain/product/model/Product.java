@@ -1,5 +1,6 @@
 package com.yongyonglee.vendor.domain.product.model;
 
+import com.yongyonglee.vendor.domain.product.dto.request.CreateProductRequestDto;
 import com.yongyonglee.vendor.domain.vendor.model.Vendor;
 import com.yongyonglee.vendor.global.entity.TimeBase;
 import jakarta.persistence.Column;
@@ -13,6 +14,7 @@ import jakarta.persistence.ManyToOne;
 import java.util.UUID;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -39,4 +41,11 @@ public class Product extends TimeBase {
     @Column(name = "quantity", nullable = false)
     private Integer quantity;
 
+    @Builder(access = AccessLevel.PUBLIC)
+    public Product(Vendor vendor, UUID hubId, String productName, Integer quantity) {
+        this.vendor = vendor;
+        this.hubId = hubId;
+        this.productName = productName;
+        this.quantity = quantity;
+    }
 }
