@@ -3,6 +3,7 @@ package com.yongyonglee.vendor.domain.vendor.service;
 import com.yongyonglee.vendor.domain.vendor.dto.request.CreateVendorRequestDto;
 import com.yongyonglee.vendor.domain.vendor.dto.request.UpdateVendorRequestDto;
 import com.yongyonglee.vendor.domain.vendor.dto.response.VendorResponseDto;
+import com.yongyonglee.vendor.domain.vendor.model.Vendor;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,4 +19,6 @@ public interface VendorService {
     VendorResponseDto updateVendor(UUID vendorId, UpdateVendorRequestDto requestDto);
 
     void deleteVendor(UUID vendorId);
+
+    Vendor findById(UUID vendorId);
 }
