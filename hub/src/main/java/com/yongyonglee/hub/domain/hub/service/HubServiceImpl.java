@@ -14,6 +14,10 @@ import com.yongyonglee.hub.domain.hub.repository.HubRepository;
 import com.yongyonglee.hub.domain.hub_route.service.HubRouteHelper;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -28,6 +32,7 @@ public class HubServiceImpl implements HubService {
     private final HubRepository hubRepository;
     private final HubRouteHelper hubRouteHelper;
 
+    @CacheEvict(cacheNames = "hubAllCache", allEntries = true)
     @Override
     public CreateHubResponseDto createHub(CreateHubRequestDto requestDto) {
 
@@ -36,6 +41,7 @@ public class HubServiceImpl implements HubService {
         return CreateHubResponseDto.from(savedHub);
     }
 
+    @Cacheable(cacheNames = "hubCache", key = "args[0]")
     @Override
     public HubResponseDto getHub(UUID hubId) {
 
@@ -44,6 +50,7 @@ public class HubServiceImpl implements HubService {
         return HubResponseDto.from(hub);
     }
 
+    @Cacheable(cacheNames = "hubAllCache", key = "{ args[0].pageNumber, args[0].pageSize }")
     @Override
     public Page<HubResponseDto> getHubs(Pageable pageable) {
 
@@ -72,6 +79,8 @@ public class HubServiceImpl implements HubService {
         return hubs.map(HubResponseDto::from);
     }
 
+    @CachePut(cacheNames = "hubCache", key = "args[0]")
+    @CacheEvict(cacheNames = "hubAllCache", allEntries = true)
     @Override
     public HubResponseDto updateHub(UUID hubId, UpdateHubRequestDto requestDto) {
 
@@ -90,6 +99,10 @@ public class HubServiceImpl implements HubService {
         return HubResponseDto.from(hub);
     }
 
+    @Caching(evict = {
+            @CacheEvict(cacheNames = "hubCache", key = "#hubId"),
+            @CacheEvict(cacheNames = "hubAllCache", allEntries = true)
+    })
     @Override
     public void deleteHub(UUID hubId) {
         Hub hub = findById(hubId);
@@ -99,7 +112,6 @@ public class HubServiceImpl implements HubService {
 
         // hub 삭제시, 해당 hub의 hubroute 정보도 삭제하는 로직 추가
         hubRouteHelper.deleteHubRoutesByHubId(hubId, "userName");
-
     }
 
     @Override
