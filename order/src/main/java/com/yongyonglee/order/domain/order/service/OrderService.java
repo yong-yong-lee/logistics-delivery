@@ -32,6 +32,7 @@ public class OrderService {
         return order.toResponse();
     }
 
+    @Transactional
     public OrderResponse getOrder(UUID orderId) {
         Order order = orderRepository.findByIdAndIsDeletedFalse(orderId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ORDER_ID_NOT_FOUND));
@@ -39,15 +40,14 @@ public class OrderService {
         return order.toResponse();
     }
 
+    @Transactional
     public void deleteOrder(UUID orderId) {
         Order order = orderRepository.findByIdAndIsDeletedFalse(orderId)
                 .orElseThrow(() -> new CustomException(ErrorCode.ORDER_ID_NOT_FOUND));
 
-        // 주문을 삭제 상태로 변경
         order.setDeleted();
         order.setDeletedAt(LocalDateTime.now());
 
-        // 변경된 주문 정보를 저장
         orderRepository.save(order);
 
     }

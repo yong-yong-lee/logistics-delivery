@@ -1,4 +1,4 @@
-package com.yongyonglee.order.domain.route;
+package com.yongyonglee.order.domain.route.dto;
 
 
 import java.time.LocalDateTime;

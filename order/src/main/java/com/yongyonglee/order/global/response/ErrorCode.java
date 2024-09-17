@@ -27,7 +27,9 @@ public enum ErrorCode {
 
     //hub-route
     RETRIEVE_FAILED(404,"허브 루트를 가져오는 요청을 실패했습니다." ),
-    NOT_FOUND_NEXT_HUB(404, "다음 허브를 찾지 못했습니다." );
+    NOT_FOUND_NEXT_HUB(404, "다음 허브를 찾지 못했습니다." ),
+    NOT_FOUND_ROUTE(404, "배송 경로를 찾지 못했습니다." ),
+    INVALID_STATUS(404, "잘못된 상태입니다.");
 
     private final int status;
     private final String message;

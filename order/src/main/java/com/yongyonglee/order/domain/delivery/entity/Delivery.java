@@ -11,6 +11,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -47,6 +48,7 @@ public class Delivery extends BaseTimeEntity {
     @Column(name = "arrival_id", nullable = false)
     private UUID arrivalId;
 
+    @Setter
     @Column(name = "status", nullable = false)
     private DeliveryStatus status = DeliveryStatus.WAITING_AT_HUB;
 
@@ -71,5 +73,14 @@ public class Delivery extends BaseTimeEntity {
                 .receiverName(receiverName)
                 .receiverSlackId(receiverSlackId)
                 .build();
+    }
+
+    @Column(name = "is_deleted", nullable = false)
+    private boolean isDeleted = false;
+
+    public void setDeleted() {
+        this.isDeleted = true;
+        setDeletedAt(LocalDateTime.now());
+        setDeletedBy("삭제한 사용자"); //todo 삭제한 사용자 넣어야해요
     }
 }
