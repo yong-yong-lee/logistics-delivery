@@ -1,6 +1,7 @@
 package com.yongyonglee.hub.domain.hub.dto.response;
 
 import com.yongyonglee.hub.domain.hub.model.Hub;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.AccessLevel;
@@ -14,7 +15,7 @@ public record CreateHubResponseDto(
         Double latitude,
         Double longitude,
         LocalDateTime createdAt
-) {
+) implements Serializable {
 
     public static CreateHubResponseDto from(Hub hub) {
         return CreateHubResponseDto.builder()
