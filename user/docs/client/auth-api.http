@@ -22,3 +22,8 @@ Content-Type: application/json
 > {%
   client.global.set("access_token", response.headers.valueOf("Authorization"))
 %}
+
+###
+GET http://localhost:19091/api/v1/auth/test
+Content-Type: application/json
+Authorization:{{access_token}}

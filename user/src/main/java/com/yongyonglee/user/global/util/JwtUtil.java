@@ -4,11 +4,7 @@ import static java.nio.charset.StandardCharsets.UTF_8;
 
 import com.yongyonglee.user.domain.user.entity.Role;
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
-import java.nio.charset.StandardCharsets;
-import java.security.Key;
 import java.util.Base64;
 import java.util.Date;
 import javax.crypto.SecretKey;
@@ -28,21 +24,18 @@ public class JwtUtil {
   private String audience;
   @Value("${spring.application.name}")
   private String issuer;
-  private Key key;
-
-  @PostConstruct
-  public void init() {
-    key = generateSigningKey(secretKey);
-  }
+  private SecretKey key;
 
   public String createToken(Long id, Role role) {
     Date issuedDate = new Date();
+    key = generateSigningKey(secretKey);
     return BEARER_PREFIX +
         Jwts.builder()
             .issuer(issuer)
             .issuedAt(issuedDate)
-            .claim(ID, id)
+            .claim(ID, id.toString())
             .claim(ROLE, role)
+            .audience().add(audience).and()
             .expiration(new Date(issuedDate.getTime() + TOKEN_TIME))
             .signWith(key)
             .compact();

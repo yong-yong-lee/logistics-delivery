@@ -1,4 +1,4 @@
-package com.yongyonglee.user.global.security;
+package com.yongyonglee.user.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
