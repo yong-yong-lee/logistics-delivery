@@ -129,6 +129,7 @@ order-service (localhost:19097/api/v1/orders, localhost:19097/api/v1/delivery)
 
 ## 9. api 명세
 
+[API DOCS 바로가기](https://superficial-look-a79.notion.site/API-106b4439041280819148c0d9b2236d0b?pvs=4)
 
 <div align="right">
 
