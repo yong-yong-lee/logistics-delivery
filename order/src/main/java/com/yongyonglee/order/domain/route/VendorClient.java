@@ -1,5 +1,6 @@
 package com.yongyonglee.order.domain.route;
 
+import com.yongyonglee.order.domain.delivery.VendorResponseWrapper;
 import com.yongyonglee.order.domain.route.dto.VendorResponseDto;
 import java.util.UUID;
 import org.springframework.cloud.openfeign.FeignClient;
@@ -11,5 +12,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface VendorClient {
 
     @GetMapping("/api/v1/vendors/{vendorId}")
-    ResponseEntity<VendorResponseDto> getVendor(@PathVariable("vendorId") UUID vendorId);
+    ResponseEntity<VendorResponseWrapper> getVendor(@PathVariable("vendorId") UUID vendorId);
 }

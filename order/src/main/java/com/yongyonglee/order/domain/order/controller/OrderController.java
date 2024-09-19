@@ -11,7 +11,6 @@ import com.yongyonglee.order.global.response.CustomException;
 import com.yongyonglee.order.global.response.ErrorCode;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
