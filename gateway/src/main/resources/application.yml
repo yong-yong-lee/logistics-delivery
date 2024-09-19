@@ -41,3 +41,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:19090/eureka/  # Eureka서버의 URL을 지정
+
+jwt:
+  secret-key: secret-key-logistic-delivery-yong-yong-lee
