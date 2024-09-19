@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 @FeignClient(name = "hub-service")
 public interface HubRouteClient {
 
-    //todo endpoint 맞는지 확인해야합니다.
+
     @GetMapping("/api/v1/hub-route")
-    ResponseEntity<List<HubRouteResponseDto>> getAllHubRoutes();
+    ResponseEntity<HubRouteResponseWrapper> getHubRoutes();
 }

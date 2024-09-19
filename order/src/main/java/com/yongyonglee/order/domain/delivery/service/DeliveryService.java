@@ -1,5 +1,6 @@
 package com.yongyonglee.order.domain.delivery.service;
 
+import com.yongyonglee.order.domain.delivery.VendorResponseWrapper;
 import com.yongyonglee.order.domain.delivery.dto.DeliveryResponse;
 import com.yongyonglee.order.domain.delivery.dto.DeliveryUpdateDto;
 import com.yongyonglee.order.domain.delivery.entity.Delivery;
@@ -13,6 +14,7 @@ import com.yongyonglee.order.domain.route.service.RouteService;
 import com.yongyonglee.order.global.response.CustomException;
 import com.yongyonglee.order.global.response.ErrorCode;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,9 +32,9 @@ public class DeliveryService {
 
     public VendorResponseDto getVendorInfo(UUID vendorId) {
 
-        ResponseEntity<VendorResponseDto> response = vendorClient.getVendor(vendorId);
+        ResponseEntity<VendorResponseWrapper> response = vendorClient.getVendor(vendorId);
 
-        return response.getBody();
+        return Objects.requireNonNull(response.getBody()).getData();
     }
 
     @Transactional

@@ -5,7 +5,6 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 
-@Getter
 @Builder(access = AccessLevel.PUBLIC)
 public record HubRouteResponseDto(
 
