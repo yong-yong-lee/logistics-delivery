@@ -10,3 +10,15 @@ Content-Type: application/json
   "slackId": "hong",
   "role" : "MANAGER"
 }
+
+###
+POST http://localhost:19091/api/v1/auth/sign-in
+Content-Type: application/json
+
+{
+  "email" : "hong@gmail.com",
+  "password": "password"
+}
+> {%
+  client.global.set("token", response.headers.valueOf("Authorization"))
+%}
