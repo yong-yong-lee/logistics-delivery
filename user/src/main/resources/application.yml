@@ -19,7 +19,7 @@ spring:
 jwt:
   audience: yy2-client
   expiration-minutes: 30
-  secret-key: secret-key-logistic-delivery-yong-yong-lee
+  secret-key: secretkeysecretkeysecretkeysecretkeyyongyonglee
 
 
 eureka:
