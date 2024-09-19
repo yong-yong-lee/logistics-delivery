@@ -9,8 +9,8 @@ spring:
   cloud:
     gateway:
       routes:  # Spring Cloud Gateway의 라우팅 설정
-        - id: auth-service     # 19092
-          uri: lb://auth-service
+        - id: user-service
+          uri: lb://user-service
           predicates:
             - Path=/api/v1/auth/**
         - id: user-service     # 19093
