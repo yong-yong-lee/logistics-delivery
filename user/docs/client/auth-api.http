@@ -1,0 +1,12 @@
+POST http://localhost:19091/api/v1/auth/sign-up
+Content-Type: application/json
+
+{
+  "username": "홍길동",
+  "nickname": "홍",
+  "email" : "hong@gmail.com",
+  "password": "password",
+  "hubId": "945c2bcb-1495-4294-80ad-f5818f10f336",
+  "slackId": "hong",
+  "role" : "MANAGER"
+}

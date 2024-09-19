@@ -10,11 +10,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.util.UUID;
 import lombok.AccessLevel;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "p_user")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
 public class User {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -42,9 +44,19 @@ public class User {
   @Column(nullable = false)
   private UUID hubId;  // 허브 ID, Foreign Key
 
+  private User(String username, String nickname, String email, String password,String hubId,String slackId, Role role) {
+    this.username = username;
+    this.nickname = nickname;
+    this.email = email;
+    this.password = password;
+    this.slackId = slackId;
+    this.role = role;
+    this.hubId = UUID.fromString(hubId);
+  }
 
 
-
-
+  public static User of(String username, String nickname, String email, String password, String hubId, String slackId ,Role role) {
+    return new User(username, nickname, email, password, hubId, slackId,role);
+  }
 
 }
